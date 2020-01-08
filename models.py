@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.ext.associationproxy import association_proxy
 
 db = SQLAlchemy()
 
@@ -17,14 +16,16 @@ class Project(db.Model):
     # columns
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
+    status = db.Column(db.Integer, nullable=False)
     manager = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     teams = db.Column(db.String(80), nullable=False)
     blurb = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(80), nullable=False)
     log = db.Column(db.String(80))
 
-    def __init__(self, name, manager, teams, blurb, description, log):
+    def __init__(self, name, status, manager, teams, blurb, description, log):
         self.name = name
+        self.status = status
         self.manager = manager
         self.teams = teams
         self.blurb = blurb

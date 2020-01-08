@@ -14,10 +14,6 @@ app.secret_key = urandom(32)
 def index():
     return render_template('_base.html')
 
-@app.route('/welcome')
-def welcome():
-    return render_template('welcome.html')
-
 @app.route('/login')
 def login():
     return render_template('login.html')
@@ -26,21 +22,25 @@ def login():
 def register():
     return render_template('register.html')
 
-@app.route('/profile')
+@app.route('/home')
 def profile():
-    return render_template('profile.html')
+    return render_template('home.html')
 
-@app.route('/profile/managed')
+@app.route('/account')
 def managed():
-    return render_template('managed.html')
+    return render_template('account.html')
 
-@app.route('/profile/joined')
+@app.route('/invites')
 def joined():
-    return render_template('joined.html')
+    return render_template('invites.html')
 
-@app.route('/create')
+@app.route('/projects')
 def create():
-    return render_template('create.html')
+    return render_template('projects.html')
+
+@app.route('/projects/<id>')
+def create():
+    return render_template('id.html')
 
 
 app.run(debug=True)
