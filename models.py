@@ -1,0 +1,75 @@
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.ext.associationproxy import association_proxy
+
+db = SQLAlchemy()
+
+class User(db.Model):
+    # columns
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(80), nullable=False)
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
+class Project(db.Model):
+    # columns
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
+    manager = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    teams = db.Column(db.String(80), nullable=False)
+    blurb = db.Column(db.String(80), nullable=False)
+    description = db.Column(db.String(80), nullable=False)
+    log = db.Column(db.String(80))
+
+    def __init__(self, name, manager, teams, blurb, description, log):
+        self.name = name
+        self.manager = manager
+        self.teams = teams
+        self.blurb = blurb
+        self.description = description
+        self.log = log
+
+class Task(db.Model):
+    # columns
+    id = db.Column(db.Integer, primary_key=True)
+    projid = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    status = db.Column(db.String(80), nullable=False)
+    content = db.Column(db.String(80), nullable=False)
+    deadline = db.Column(db.String(80), nullable=False)
+
+    def __init__(self, projid, status, content, deadline):
+        self.projid = projid
+        self.status = status
+        self.content = content
+        self.deadline = deadline
+
+class Assignment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.ForeignKey('user.id'))
+    projid = db.Column(db.ForeignKey('project.id'))
+    taskid = db.Column(db.ForeignKey('tast.id'))
+
+    user = db.relationship('User', foreign_keys=[userid])
+    project = db.relationship('Project', foreign_keys=[projid])
+    task = db.relationship('Task', foreign_keys=[taskid])
+
+    def __init__(self, user, project, task):
+        self.user = user
+        self.project = project
+        self.task = task
+
+class Employment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    projid = db.Column(db.ForeignKey('project.id'))
+    userid = db.Column(db.ForeignKey('user.id'))
+    team = db.Column(db.Integer)
+
+    project = db.relationship('Project', foreign_keys=[projid])
+    user = db.relationship('User', foreign_keys=[userid])
+
+    def __init__(self, project, user, team):
+        self.project = project
+        self.user = user
+        self.team = team
