@@ -1,7 +1,23 @@
 //relies on jQuery being implemented on the html page
 
 const edittask = function(e) {
-	let id = this.id;
+	let id = this.id
+	$.ajax({
+		type: 'GET',
+		url: '/edittask',
+		data: `id=${id}`,
+		success: function(html) {
+			this.innerHTML = html;
+			document.getElementById("push").addEventListener("click", pushedits);
+		},
+		error: function(err) {
+			console.log(`could not edit task: ${err}`);
+		}
+	});
+};
+
+const pushedits = function(e) {
+	let id = document.getElementById("id").value;
 	let stat = document.getElementById("status").value;
 	let content = document.getElementById("content").value;
 	let deadline = document.getElementById("deadline").value;
@@ -14,7 +30,7 @@ const edittask = function(e) {
 			task.innerHTML = html;
 		},
 		error: function(err) {
-			console.log(err);
+			console.log(`could not push edits: ${err}`);
 		}
 	});
 };
