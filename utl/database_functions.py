@@ -12,6 +12,12 @@ def add_project(name, manager, teams, blurb, description, log):
     db.session.commit()
     return
 
+def change_manager(pname, mname):
+    proj = Project.query.filter_by(name=pname).first()
+    new_manager = User.query.filter_by(name=mname).first()
+    proj.manager = new_manager.id
+    return
+
 def complete_project(pname):
     proj = Project.query.filter_by(name=pname).first()
     proj.status = 1
@@ -22,10 +28,15 @@ def abandon_project(pname):
     proj.status = -1
     return
 
-def add_task(pname, status, content, deadline):
+def add_task(pname, uname, status, content, deadline):
     proj = Project.query.filter_by(name=pname).first()
     new_task = Task(proj.id, status, content, deadline)
     db.session.add(new_task)
+
+    user = User.query.filter_by(name=uname).first()
+    new_assignment = Assignment(user.id, proj.id, new_task.id)
+    db.session.add(new_assignment)
+    
     db.session.commit()
     return
 

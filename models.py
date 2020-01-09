@@ -50,7 +50,7 @@ class Assignment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userid = db.Column(db.ForeignKey('user.id'))
     projid = db.Column(db.ForeignKey('project.id'))
-    taskid = db.Column(db.ForeignKey('tast.id'))
+    taskid = db.Column(db.ForeignKey('task.id'))
 
     user = db.relationship('User', foreign_keys=[userid])
     project = db.relationship('Project', foreign_keys=[projid])
