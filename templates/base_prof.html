@@ -13,38 +13,138 @@
       {% endblock %}
     </head>
     <style>
+        #wrapper {
+          padding-left: 250px;
+          transition: all 0.4s ease 0s;
+        }
+
+        #sidebar-wrapper {
+          margin-left: -250px;
+          left: 250px;
+          width: 250px;
+          background: #000;
+          position: fixed;
+          height: 100%;
+          overflow-y: auto;
+          z-index: 1000;
+          transition: all 0.4s ease 0s;
+        }
+
+        #page-content-wrapper {
+          width: 100%;
+        }
+
+        .sidebar-nav {
+          position: absolute;
+          top: 0;
+          width: 250px;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+
+        .sidebar-nav li {
+          line-height: 40px;
+          text-indent: 20px;
+        }
+
+        .sidebar-nav li a {
+          color: #999999;
+          display: block;
+          text-decoration: none;
+        }
+
+        .sidebar-nav li a:hover {
+          color: #fff;
+          background: rgba(255,255,255,0.2);
+          text-decoration: none;
+        }
+
+        .sidebar-nav li a:active,
+        .sidebar-nav li a:focus {
+          text-decoration: none;
+        }
+
+        .sidebar-nav > .sidebar-brand {
+          height: 65px;
+          line-height: 60px;
+          font-size: 18px;
+        }
+
+        .sidebar-nav > .sidebar-brand a {
+          color: #999999;
+        }
+
+        .sidebar-nav > .sidebar-brand a:hover {
+          color: #fff;
+          background: none;
+        }
+
+        .content-header {
+          height: 65px;
+          line-height: 65px;
+        }
+
+        .content-header h1 {
+          margin: 0;
+          margin-left: 20px;
+          line-height: 65px;
+          display: inline-block;
+        }
+
+        #menu-toggle {
+          display: none;
+        }
+
+        .inset {
+          padding: 20px;
+        }
+
+        @media (max-width:767px) {
+
+          #wrapper {
+            padding-left: 0;
+          }
+
+          #sidebar-wrapper {
+            left: 0;
+          }
+
+          #wrapper.active {
+            position: relative;
+            left: 250px;
+          }
+
+          #wrapper.active #sidebar-wrapper {
+            left: 250px;
+            width: 250px;
+            transition: all 0.4s ease 0s;
+          }
+
+          #menu-toggle {
+            display: inline-block;
+          }
+
+          .inset {
+            padding: 15px;
+          }
+        }
     </style>
     <body>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="!!!!!!!!!!!!!">Project Manager</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="!!!!!!!!!!!!!!!!!">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="!!!!!!!!!!!!!!!!!">Account</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="!!!!!!!!!!!!!!!!!!1" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Projects
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="!!!!!!!!!!!!!!!!">Action</a>
-          <a class="dropdown-item" href="!!!!!!!!!!!!!!!!!!">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="!!!!!!!!!!!!!!!!!!!!!">Something else here</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="!!!!!!!!!!!!!!!!!">Invites</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+      <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand"><a href="#!!!!!!!!!!!!!">Project Manager</a>
+            </li>
+            <li><a href="#!!!!!!!!!!!!!">Home</a>
+            </li>
+            <li><a href="#!!!!!!!!!!!!!">Account</a>
+            </li>
+            <li><a href="#!!!!!!!!!!!!!">Projects</a>
+            </li>
+            <li><a href="#!!!!!!!!!!!!!">Invites</a>
+            </li>
+        </ul>
+    </div>
     </body>
 </html>
