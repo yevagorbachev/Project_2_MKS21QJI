@@ -16,6 +16,6 @@ app.secret_key = urandom(32)
 
 @app.route("/welcome")
 def welcome():
-    return render_template('base_prof.html')
+    return render_template('projects.html')
 
 app.run(debug=True)
