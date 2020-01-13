@@ -1,22 +1,33 @@
 //relies on jQuery being implemented on the html page
-
-const edittask = function(e) {
-	let id = this.id
+const edit = function(e) {
+	console.log(e);
+	let task = e;
+	let id = e.id;
+	let dataString = `id=${id}`;
+	console.log(dataString);
 	$.ajax({
 		type: 'GET',
 		url: '/edittask',
-		data: `id=${id}`,
+		data: dataString,
 		success: function(html) {
-			this.innerHTML = html;
+			task.removeEventListener("click", edittask);
+			console.log(task.innerHTML);
+			task.innerHTML = html;
+			console.log('changed html');
 			document.getElementById("push").addEventListener("click", pushedits);
 		},
-		error: function(err) {
-			console.log(`could not edit task: ${err}`);
+		error: function() {
+			console.log('could not edit task');
 		}
 	});
 };
 
+const edittask = function(e) {
+	edit(e.target);
+}
+
 const pushedits = function(e) {
+	let projid = document.getElementById("projid").value;
 	let id = document.getElementById("id").value;
 	let stat = document.getElementById("status").value;
 	let content = document.getElementById("content").value;
@@ -24,37 +35,43 @@ const pushedits = function(e) {
 	$.ajax({
 		type: 'POST',
 		url: '/edittask',
-		data: `id=${id}&stat=${stat}&content=${content}&deadline=${deadline}`,
+		data: `projid=${projid}&id=${id}&stat=${stat}&content=${content}&deadline=${deadline}`,
 		success: function(html) {
 			let task = document.getElementById(`${id}`);
 			task.innerHTML = html;
+			task.addEventListener("click", edittask);
 		},
-		error: function(err) {
-			console.log(`could not push edits: ${err}`);
+		error: function() {
+			console.log('could not push edits');
 		}
 	});
 };
 
 const newtask = function(e) {
 	let projid = document.getElementById("projid").value;
+	let dataString = `projid=${projid}`;
+	console.log(dataString)
 	$.ajax({
 		type: 'POST',
-		url='/newtask',
-		data: `projid=${projid}`,
-		success: function(id) {
-			let task = document.createElement("div");
-			task.id = id;
-			task.addEventListener("click", edittask);
+		url: '/newtask',
+		data: dataString,
+		dataType: "JSON",
+		success: function(data) {
+			console.log(data['id']);
+			let task = document.createElement('div');
+			console.log(task.id);
 			document.getElementById("tasks").appendChild(task);
-			edittask(task);
-		}
-		error: function(err) {
-			console.log(`could not create new element: ${err}`);
+			task.id = `${data['id']}`;
+			console.log(task);
+			edit(task);
+		},
+		error: function() {
+			console.log('could not create new element');
 		}
 	});
 };
 
-var tasks = document.getElementsByTagName("div");
+var tasks = document.getElementsByClassName("task");
 for(var i = 0; i < tasks.length; i++) {
 	tasks[i].addEventListener("click", edittask);
 }
