@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import UniqueConstraint
 
 db = SQLAlchemy()
 
@@ -7,6 +8,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
+    tokentype = db.Column(db.String(80))
+
 
     def __init__(self, username, password):
         self.username = username
@@ -35,12 +38,11 @@ class Project(db.Model):
 class Task(db.Model):
     # columns
     id = db.Column(db.Integer, primary_key=True)
-    projid = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     status = db.Column(db.String(80), nullable=False)
     content = db.Column(db.String(80), nullable=False)
     deadline = db.Column(db.String(80), nullable=False)
 
-    def __init__(self, projid, status, content, deadline):
+    def __init__(self, status, content, deadline):
         self.projid = projid
         self.status = status
         self.content = content
@@ -51,6 +53,8 @@ class Assignment(db.Model):
     userid = db.Column(db.ForeignKey('user.id'))
     projid = db.Column(db.ForeignKey('project.id'))
     taskid = db.Column(db.ForeignKey('task.id'))
+
+    UniqueConstraint(userid,projid,taskid)
 
     user = db.relationship('User', foreign_keys=[userid])
     project = db.relationship('Project', foreign_keys=[projid])
@@ -66,6 +70,8 @@ class Employment(db.Model):
     projid = db.Column(db.ForeignKey('project.id'))
     userid = db.Column(db.ForeignKey('user.id'))
     team = db.Column(db.Integer)
+
+    UniqueConstraint(projid,userid)
 
     project = db.relationship('Project', foreign_keys=[projid])
     user = db.relationship('User', foreign_keys=[userid])
