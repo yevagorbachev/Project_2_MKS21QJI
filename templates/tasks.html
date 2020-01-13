@@ -4,7 +4,13 @@
         <title>
             {% block title %}aaaaaaaaaa{% endblock title %}
         </title>
+<style>
+*{
+	border-radius: 0 !important;
+}
+</style>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -14,12 +20,7 @@
     <body>
 	    <input type="hidden" id="projid" value="123">
 	    <div id="tasks">
-		    <div class="task" id="0">
-			    click me
-		    </div>
-		    <div class="task" id="1">
-			    click me
-		    </div>
+		    <!-- insert tasks here -->
 	    </div>
 	    <button id="create" class="btn btn-primary">Create a New Task!</button>
 	    <script src="/static/scripts/tasks.js"></script>
