@@ -1,1 +1,10 @@
-devlog
+gorbachevY -- 2020-01-07 23:40
+DEVLOG UPDATES: [
+  - changed sitemap
+  - changed website design
+  - removed internal API section
+  - added join tables for employments and tasks
+]
+
+amandaC -- 2019-01-07 23:23
+Used SQLAlchemy to create database tables as objects (has not been tested yet)
