@@ -2,59 +2,61 @@ from flask import *
 from models import db, User, Project, Task, Assignment, Employment
 
 
-def verify_user(username, password):
-    check_user = User.query.filter_by(username=user).first()
+def verify_user(**kwargs):
+    print(kwargs)
+    check_user = User.query.filter_by(username=kwargs['user']).first()
 
     if (check_user == None):
         flash("Username does not exist")
         return False
 
-    if (check_user.password == password):
+    if (check_user.password == kwargs['password']):
+        print("LOG IN")
         return True
     else:
         flash("Username and password combination not found")
         return False
 
-def edit_token(user,token):
-    user.tokentype = token
+def edit_token(**kwargs):
+    kwargs['user'].token = kwargs['new_token']
     return
 
 def fetch_token(user):
     return user.tokentype
 
-def add_user(username, password):
-    new_user = User(username, password)
+def add_user(**kwargs):
+    new_user = User(kwargs['user'], kwargs['password'], None)
     db.session.add(new_user)
     db.session.commit()
     return
 
-def change_password(user, old_password, new_password):
-    if (user.password == old_password):
-        user.password = new_password
+def change_password(**kwargs):
+    if (kwargs['user'].password == kwargs['old_password']):
+        kwargs['user'].password = kwargs['new_password']
         flash("Successfully changed password")
         return True
     else:
         flash("Incorrect password")
         return False
 
-def join_project(user, project):
-    employ = Employment(user, project, 0)
-    db.seesion.add(emplo)
+def join_project(**kwargs):
+    employ = Employment(kwargs['user'], kwargs['project'], 0)
+    db.seesion.add(employ)
     db.session.commit()
     return
 
-def add_project(pname, manager, teams, blurb, description, log):
+def add_project(**kwargs):
     check_pname = Project.query.filter_by(name=pname).first()
     if(check_pname != None):
-        new_project = Project(pname, 0, manager, teams, blurb, description, log)
+        new_project = Project(kwargs['pname'], 0, kwargs['manager'], kwargs['teams'], kwargs['blurb'], kwargs['description'], kwargs['log'])
         db.session.add(new_project)
         db.session.commit()
         return 1
     return 0
 
-def change_manager(pname, mname):
-    proj = Project.query.filter_by(name=pname).first()
-    new_manager = User.query.filter_by(name=mname).first()
+def change_manager(**kwargs):
+    proj = Project.query.filter_by(name=kwargs['pname']).first()
+    new_manager = User.query.filter_by(name=kwargs['mname']).first()
     proj.manager = new_manager.id
     return
 
@@ -68,12 +70,12 @@ def abandon_project(pname):
     proj.status = -1
     return
 
-def add_task(pname, uname, status, content, deadline):
-    proj = Project.query.filter_by(name=pname).first()
-    new_task = Task(proj.id, status, content, deadline)
+def add_task(**kwargs):
+    proj = Project.query.filter_by(name=kwargs['pname']).first()
+    new_task = Task(proj.id, kwargs['status'], kwargs['content'], kwargs['deadline'])
     db.session.add(new_task)
 
-    user = User.query.filter_by(name=uname).first()
+    user = User.query.filter_by(name=kwargs['uname']).first()
     new_assignment = Assignment(user.id, proj.id, new_task.id)
     db.session.add(new_assignment)
 

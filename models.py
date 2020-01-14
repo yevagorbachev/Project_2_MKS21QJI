@@ -8,10 +8,10 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
-    tokentype = db.Column(db.String(80))
+    token = db.Column(db.String(80))
 
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, tokentype):
         self.username = username
         self.password = password
 
@@ -21,10 +21,11 @@ class Project(db.Model):
     name = db.Column(db.String(80), unique=True, nullable=False)
     status = db.Column(db.Integer, nullable=False)
     manager = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    teams = db.Column(db.String(80), nullable=False)
+    teams = db.Column(db.String(80))
     blurb = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(80), nullable=False)
     log = db.Column(db.String(80))
+    calendarid = db.Column(db.Integer)
 
     def __init__(self, name, status, manager, teams, blurb, description, log):
         self.name = name

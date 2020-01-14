@@ -4,13 +4,20 @@
 #2020-01-16
 
 from flask import *
-from flask_login import login_required, current_user
+from flask_login import LoginManager, login_required, current_user
 from os import urandom
 
 from models import db, User, Project, Task, Assignment, Employment
 from utl.dbfuncs import *
 
 app = Flask(__name__)
+
+# set up login manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+login_manager.login_message = 'Please Log In to view this page!'
+login_manager.login_message_category = 'danger'
 
 # app configurations
 app.config['SECRET_KEY'] = (urandom(64))
@@ -39,10 +46,11 @@ def login():
 def loginform():
     user = request.form["username"]
     password = request.form["password"]
-
-    if (verify_user(user, password)):
+    if (verify_user(user=user, password=password)):
+        flash("Successfully logged in")
         return redirect(url_for("home"))
     else:
+        flash("Failed to log in")
         return redirect(url_for("login"))
 
 @app.route('/register', methods=['GET'])
@@ -60,7 +68,7 @@ def registerform():
         flash("Username is taken. Please try again.")
         return redirect(url_for("register"))
     else:
-        add_user(username, password)
+        add_user(user=user, password=password)
         return redirect(url_for("login"))
 
 @app.route('/home', methods=['GET'])
