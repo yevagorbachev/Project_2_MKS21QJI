@@ -5,18 +5,21 @@
 
 from flask import *
 from os import urandom
+import json
 
 
 app = Flask(__name__)
 app.secret_key = urandom(32)
-#
-# @app.route('/')
-# def index():
-#     return render_template('_base.html')
 
-@app.route("/welcome")
-def welcome():
-    return render_template('projects.html')
+testdata = [
+        [0, 123, "incomplete", "create login page", "2020-01-07"],
+        [1, 123, "incomplete", "user registration into database", "2020-02-01"]
+        ]
+print(testdata)
+
+@app.route('/')
+def index():
+    return render_template('dummy.html')
 
 @app.route('/newtask', methods=['POST'])
 #this function needs to be redone to fit into database stuff
