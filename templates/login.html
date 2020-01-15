@@ -1,13 +1,24 @@
 {% extends "base_sign.html" %}
 
+<!-- Extra CSS -->
+{% block style %}
+  #login {text-align: center;}
+  .sub {padding: 10px; border-radius: 4px; background-color: #989898;
+        border: none; color: white; text-align: center; display: inline-block;
+        font-size: 16px; margin: 4px 2px; cursor: pointer;}
+{% endblock %}
+
 {% block content %}
-  <h1>Login Page</h1>
+
+<div class="container font-weight-bold" id="login">
+  <h1>Login</h1>
   <form action='#!!!!!!!!!!!!!' method="POST">
       Username:<br>
       <input type="text" name="username"><br>
       Password:<br>
       <input type="password" name="password">
-      <br>
-      <input type="submit" value="Submit">
+      <br><br>
+      <input class="sub" type="submit" value="Submit">
   </form><br>
+</div>
 {% endblock %}

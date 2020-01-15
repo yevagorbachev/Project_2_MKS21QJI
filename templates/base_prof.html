@@ -9,10 +9,12 @@
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
       {% block head %}
-          <title>{{Title}}</title>
+          <title>{% block title %}{% endblock %}</title>
       {% endblock %}
     </head>
     <style>
+        body {background-color: #efeeee;}
+        {% block style %}{% endblock %}
     /* https://stackoverflow.com/questions/23669330/bootstrap-sidebar-menu-and-sidebar-navigation */
         #sidebar-wrapper {margin-left: -250px; left: 250px; width: 250px; background: #000;
                           position: fixed; height: 100%; }
@@ -38,7 +40,7 @@
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#!!!!!!!!!!!!!" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      Projects - Add js
+                      Projects - Add js?
               </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                   {% for name in projects %}
@@ -50,7 +52,6 @@
             </li>
         </ul>
     </div>
-
     {% block content %}
     {% endblock %}
     </body>

@@ -12,7 +12,12 @@
           <title>{{Title}}</title>
       {% endblock %}
     </head>
-    <body style="background-color:#7649fe;">
+    <style>
+        {% block style %}{% endblock %}
+        body {background-color: #efeeee;}
+        h1 {padding: 20px}
+    </style>
+    <body>
       {% block content %}
       {% endblock %}
     </body>
