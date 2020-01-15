@@ -1,10 +1,11 @@
-{% extends "base_proj.html" %}
-{% block title %}{{name}}{% endblock %}
+{% extends "base_prof.html" %}
+{% block title %}Info{% endblock %}
 
 <!-- Extra CSS -->
 {% block style %}
   #proj {padding-left: 270px;}
   h1 {padding-top: 50px;}
+
 {% endblock %}
 
 {% block content %}
@@ -14,13 +15,13 @@
     <div class="container p-2 my-4 ml-2">
       <p class="mx-3">Description EXAMPLE{{description}}</p>
     </div>
-    <div class="container p-2 my-4 ml-2 border">
-      <ol class="mx-3">
+    <br>
+      <div class="mx-3">
         {% for task in tasks %}
-          <li>{{task}}</li>
+        <div class="container p-2 my-4 ml-2 border">
+          <p>Task 1{{task}}</p>
         {% endfor %}
-        </ol>
+        </div>
     </div>
-
 </div>
 {% endblock %}
