@@ -1,0 +1,27 @@
+{% extends "base_prof.html" %}
+{% block title %}Info{% endblock %}
+
+<!-- Extra CSS -->
+{% block style %}
+  #proj {padding-left: 270px;}
+  h1 {padding-top: 50px;}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container" id="proj">
+  <h1>Name EXAMPLE{{name}}</h1>
+    <div class="container p-2 my-4 ml-2">
+      <p class="mx-3">Description EXAMPLE{{description}}</p>
+    </div>
+    <br>
+      <div class="mx-3">
+        {% for task in tasks %}
+        <div class="container p-2 my-4 ml-2 border">
+          <p>Task 1{{task}}</p>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

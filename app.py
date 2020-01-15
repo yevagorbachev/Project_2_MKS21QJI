@@ -16,7 +16,7 @@ app.secret_key = urandom(32)
 
 @app.route("/welcome")
 def welcome():
-    return render_template('projects.html')
+    return render_template('invites.html')
 
 @app.route('/newtask', methods=['POST'])
 #this function needs to be redone to fit into database stuff
