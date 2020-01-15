@@ -8,7 +8,7 @@ from flask_login import LoginManager, login_required, current_user, login_user, 
 from os import urandom
 from models import db, User, Project, Task, Assignment, Employment
 from utl.dbfuncs import *
-from utl.errors import InsufficentPerms
+from utl.errors import NoPerms
 
 app = Flask(__name__)
 
@@ -188,7 +188,7 @@ def addtask():
     p = int(request.form["projid"])
     check_manager = get_project(project)
     if (check_manager.manager != current_user.id):
-        raise InsufficientPerms('You are not the manager of this project')
+        raise NoPerms('You are not the manager of this project')
     u = request.form["user"]
     s = request.form["status"]
     c = request.form["content"]
@@ -202,7 +202,7 @@ def edittask():
         p = request.form["project"]
         check_manager = get_project(project)
         if (check_manager.manager != current_user.id):
-            raise InsufficientPerms('You are not the manager of this project')
+            raise NoPerms('You are not the manager of this project')
         task = get_task(int(request.args['id']))
         return '<input type="hidden" id="id" value="{}"><textarea id="content">{}</textarea><br><input type="date" id="deadline" value="{}"><br><button class="btn btn-primary" id="push">Push Edits</button>'.format(task.id, task.content, task.deadline)
     else:
