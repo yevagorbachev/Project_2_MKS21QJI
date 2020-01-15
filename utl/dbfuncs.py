@@ -1,15 +1,15 @@
 from flask import *
 from models import db, User, Project, Task, Assignment, Employment
 
-def get_user(uname):
-    return User.query.filter_by(username=uname).first()
+def get_user(**kwargs):
+    return User.query.filter_by(username=kwargs['uname']).first()
 
-def get_project(pname):
-    return Project.query.filter_by(name=pname).first()
+def get_project(**kwargs):
+    return Project.query.filter_by(name=kwargs['uname']).first()
 
 def verify_user(**kwargs):
     print(kwargs)
-    check_user = User.query.filter_by(username=kwargs['user']).first()
+    check_user = User.query.filter_by(username=kwargs['uname']).first()
 
     if (check_user == None):
         flash("Username does not exist")
@@ -30,7 +30,7 @@ def fetch_token(user):
     return user.tokentype
 
 def add_user(**kwargs):
-    new_user = User(kwargs['user'], kwargs['password'], None)
+    new_user = User(kwargs['uname'], kwargs['password'], None)
     db.session.add(new_user)
     db.session.commit()
     return
@@ -48,21 +48,19 @@ def get_invites(**kwargs):
     return Invites.query.filter_by(user=kwargs['user'].id).all()
 
 def add_invite(**kwargs):
-    new_invite = User(kwargs['project'], kwargs['user'], None)
+    new_invite = Invite(kwargs['project'].id, kwargs['user'].id, None)
     db.session.add(new_invite)
     db.session.commit()
     return
 
-def accept_invite(uname, project):
-    p = get_project(project)
-    i = Invites.query.filter_by(user=uname.id,project=project.id).first()
+def accept_invite(**kwargs):
+    i = Invites.query.filter_by(user=kwargs['user'].id,project=kwargs['project'].id).first()
     i.status = 0;
     join_project(user=uname, project=p)
     return
 
-def decline_invite(user, project):
-    p = get_project(project)
-    i = Invites.query.filter_by(user=user.id,project=project.id).first()
+def decline_invite(**kwargs):
+    i = Invites.query.filter_by(user=kwargs['user'].id,project=kwargs['project'].id).first()
     i.status = -1;
     return
 
@@ -87,18 +85,18 @@ def change_manager(**kwargs):
     proj.manager = new_manager.id
     return
 
-def complete_project(pname):
-    proj = Project.query.filter_by(name=pname).first()
+def complete_project(**kwargs):
+    proj = Project.query.filter_by(name=kwargs['pname']).first()
     proj.status = 1
     return
 
-def abandon_project(pname):
-    proj = Project.query.filter_by(name=pname).first()
+def abandon_project(**kwargs):
+    proj = Project.query.filter_by(name=kwargs['pname']).first()
     proj.status = -1
     return
 
-def get_tasks(pid):
-    return Assignment.query.filter_by(project=pid)
+def get_tasks(**kwargs):
+    return Assignment.query.filter_by(project=kwargs['pid'])
 
 def add_task(**kwargs):
     proj = Project.query.filter_by(name=kwargs['pname']).first()
@@ -113,20 +111,20 @@ def add_task(**kwargs):
     return
 
 def edit_task(**kwargs):
-    t = Task.query.filter_by(id=kwargs['task'])
+    t = Task.query.filter_by(id=kwargs['tid'])
     if (kwargs['content'] != ''):
         t.content = kwargs['content']
     if (kwargs['deadline'] != ''):
         t.deadline = kwargs['deadline']
 
-def complete_task(pname):
-    proj = Project.query.filter_by(name=pname).first()
+def complete_task(**kwargs):
+    proj = Project.query.filter_by(name=kwargs['pname']).first()
     task = Task.query.filter_by(projid=proj.id).first()
     task.status = 1
     return
 
-def delete_task(pname):
-    proj = Project.query.filter_by(name=pname).first()
+def delete_task(**kwargs):
+    proj = Project.query.filter_by(name=kwargs['pname']).first()
     task = Task.query.filter_by(projid=proj.id).first()
     db.session.delete(task)
     return
