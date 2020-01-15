@@ -11,17 +11,17 @@
 {% block content %}
 
 <div class="container" id="proj">
-  <h1>Name EXAMPLE{{name}}</h1>
+  <h1>{{name}}</h1>
     <div class="container p-2 my-4 ml-2">
-      <p class="mx-3">Description EXAMPLE{{description}}</p>
+      <p class="mx-3">{{description}}</p>
     </div>
     <br>
-      <div class="mx-3">
-        {% for task in tasks %}
-        <div class="container p-2 my-4 ml-2 border">
-          <p>Task 1{{task}}</p>
-        {% endfor %}
-        </div>
+    <div id="tasks" class="mx-3">
+	    {% for task in tasks %}
+	    <div class="task container p-2 my-4 ml-2 border" id="{{ task[0] }}">
+		    <p>{{ task[4] }} - <i>{{ task[2] }}</i>: {{ task[3] }}</p>
+	    </div>
+	    {% endfor %}
     </div>
 </div>
 {% endblock %}

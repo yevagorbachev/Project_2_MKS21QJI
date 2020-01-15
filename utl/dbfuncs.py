@@ -112,7 +112,7 @@ def add_task(**kwargs):
     db.session.add(new_assignment)
 
     db.session.commit()
-    return
+    return new_task.id
 
 def edit_task(**kwargs):
     t = Task.query.filter_by(id=kwargs['tid'])

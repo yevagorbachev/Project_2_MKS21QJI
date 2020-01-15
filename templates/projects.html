@@ -12,15 +12,17 @@
 
 <div class="container" id="profile">
   <h1>My Projects</h1>
-    {% for name,description in projects %}
+    {% for project in projects %}
     <div class="container p-2 my-4 ml-2 border">
-      <a class="proj font-weight-bold" href="#!!!!!!!">{{name}}</a>
-      <p class="mx-3">{{description}}</p>
+	    <a class="proj font-weight-bold" href="/projects/{{ project[0] }}">{{ project[1] }}</a>
+      <p class="mx-3">{{ project[5] }}</p>
     </div>
     {% endfor %}
+    <!--
     <div class="container p-2 my-4 ml-2 border">
       <a class="proj font-weight-bold" href="#!!!!!!!">Project EXAMPLE - Delete Later</a>
       <p class="mx-3">This is the description.</p>
     </div>
+    -->
 </div>
 {% endblock %}

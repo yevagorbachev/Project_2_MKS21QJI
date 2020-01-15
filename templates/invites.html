@@ -16,16 +16,18 @@
     {% for name in invites %}
     <div class="container p-5 my-4 ml-2 border">
       <p class="proj font-weight-bold">{{name}}</p>
-      <a class="choose font-weight-bolder" href=#!!!!!!!!>Accept</a>
-      <a class="choose font-weight-bolder" href=#!!!!!!!!>Decline</a>
+      <a class="choose font-weight-bolder" href='/invites/accept/{{ name }}'>Accept</a>
+      <a class="choose font-weight-bolder" href='/invites/decline/{{ name }}'>Decline</a>
     </div>
     <br>
     {% endfor %}
+    <!--
     <div class="container p-5 my-4 ml-2 border">
       <p class="proj font-weight-bold">Project EXAMPLE</p>
-      <a class="choose font-weight-bolder" href=#!!!!!!!!>Accept</a>
-      <a class="choose font-weight-bolder" href=#!!!!!!!!>Decline</a>
+      <a class="choose font-weight-bolder" href=''>Accept</a>
+      <a class="choose font-weight-bolder" href=''>Decline</a>
     </div>
     <br>
+    -->
 </div>
 {% endblock %}

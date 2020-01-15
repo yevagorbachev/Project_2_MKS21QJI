@@ -6,10 +6,9 @@
 from flask import *
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from os import urandom
-import utl
-
 from models import db, User, Project, Task, Assignment, Employment
 from utl.dbfuncs import *
+from utl.errors import InsufficentPerms
 
 app = Flask(__name__)
 
@@ -120,10 +119,6 @@ def registerform():
 def home():
     return render_template('home.html')
 
-@app.route('/account', methods=['GET'])
-def account():
-    return render_template('account.html')
-
 @app.route('/account', methods=['POST'])
 def accountform():
     old_password = request.form["old_password"]
@@ -226,33 +221,33 @@ def edit():
 
 @app.route('/addtask', methods=['POST'])
 def addtask():
-    p = request.form["project"]
-
+    p = int(request.form["projid"])
     check_manager = get_project(project)
     if (check_manager.manager != current_user.id):
-        flash("You are not the manager of this project")
-        return redirect(url_for("projects"))
-
+        raise InsufficientPerms('You are not the manager of this project')
     u = request.form["user"]
     s = request.form["status"]
     c = request.form["content"]
     d = request.form["deadline"]
-    add_task(pname=p,uname=u,status=s,content=c,deadline=d)
-    return redirect(url_for("projects"))
+    taskid = add_task(pname=p,uname=u,status=s,content=c,deadline=d)
+    return taskid;
 
-@app.route('/edittask', methods=['POST'])
+@app.route('/edittask', methods=['GET', 'POST'])
 def edittask():
-    p = request.form["project"]
-
-    check_manager = get_project(project)
-    if (check_manager.manager != current_user.id):
-        flash("You are not the manager of this project")
-        return redirect(url_for("projects"))
-    t = request.form["task"]
-    c = request.form["content"]
-    d = request.form["deadline"]
-    edit_task(task=t,content=c,deadline=d)
-    return redirect(url_for("projects"))
+    if request.method == 'GET':
+        p = request.form["project"]
+        check_manager = get_project(project)
+        if (check_manager.manager != current_user.id):
+            raise InsufficientPerms('You are not the manager of this project')
+        task = get_task(int(request.args['id']))
+        return '<input type="hidden" id="id" value="{}"><textarea id="content">{}</textarea><br><input type="date" id="deadline" value="{}"><br><button class="btn btn-primary" id="push">Push Edits</button>'.format(task.id, task.content, task.deadline)
+    else:
+        t = int(request.form["id"])
+        c = request.form["content"]
+        d = request.form["deadline"]
+        edit_task(task=t,content=c,deadline=d)
+        task = get_task(t);
+        return '{} - <i>{}</i>: {}'.format(d, task.status, c)
 
 @app.route('/invite', methods=['POST'])
 def invite():

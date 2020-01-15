@@ -16,8 +16,9 @@ const edit = function(e) {
 			console.log('changed html');
 			document.getElementById("push").addEventListener("click", pushedits);
 		},
-		error: function() {
-			console.log('could not edit task');
+		error: function(error) {
+			console.log('could not edit task:');
+			alert(error);
 		}
 	});
 };
@@ -65,8 +66,10 @@ const newtask = function(e) {
 			console.log(task);
 			edit(task);
 		},
-		error: function() {
+		error: function(error) {
 			console.log('could not create new element');
+			console.log(error);
+			alert(error);
 		}
 	});
 };
