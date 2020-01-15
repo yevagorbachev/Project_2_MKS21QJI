@@ -34,7 +34,7 @@ with app.app_context():
 @app.route('/', methods=['GET'])
 def index():
     if('username' in session):
-        return redirect(url_for("home"))
+        return redirect(url_for("projects"))
     else:
         return redirect(url_for("login"))
 
@@ -47,10 +47,10 @@ def loginform():
     user = request.form["username"]
     password = request.form["password"]
 
-    if (verify_user(user=user, password=password)):
+    if (verify_user(uname=user, password=password)):
         session['username'] = user
         flash('Logged in successfully!', 'success')
-        return redirect(url_for("home"))
+        return redirect(url_for("projects"))
     else:
         flash("Failed to log in")
         return redirect(url_for("login"))
@@ -76,12 +76,8 @@ def registerform():
         flash("Username is taken. Please try again.")
         return redirect(url_for("register"))
     else:
-        add_user(user=user, password=password)
+        add_user(uname=user, password=password)
         return redirect(url_for("login"))
-
-@app.route('/home', methods=['GET'])
-def home():
-    return render_template('home.html')
 
 @app.route('/account', methods=['POST'])
 def accountform():
@@ -90,7 +86,7 @@ def accountform():
 
     if (change_password(current_user,old_password,new_password)):
         flash("Successfully changed password")
-        return redirect(url_for("home"))
+        return redirect(url_for("projects"))
     else:
         return redirect(url_for("account"))
 
@@ -120,7 +116,7 @@ def invitesform():
 
 @app.route('/projects', methods=['GET'])
 def projects():
-    e = get_employments(user = current_user)
+    e = get_user_project(uid = current_user)
     current = []
     for employed in e:
         current.append(employed.project)
@@ -145,7 +141,7 @@ def create():
         flash("Project name not unique: "+ name)
     return redirect(url_for("project"))
 
-@app.route('/project/<pid>', methods=['GET'])
+@app.route('/projects/<pid>', methods=['GET'])
 def project(pid):
     project = Project.query.filter_by(id=pid).first()
     return render_template('id.html',

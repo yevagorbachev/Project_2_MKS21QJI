@@ -35,23 +35,21 @@
       <!-- Sidebar -->
     <div id="sidebar-wrapper" *>
         <ul class="sidebar-nav">
-            <li class="sidebar-brand"><a href="#!!!!!!!!!!!!!">Project Manager<sup>TM</sup></a>
+            <li class="sidebar-brand"><a href="">Project Manager<sup>TM</sup></a>
             </li>
-            <li><a href="#!!!!!!!!!!!!!">Home</a>
-            </li>
-            <li><a href="#!!!!!!!!!!!!!">Account</a>
+            <li><a href="/account">Account</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#!!!!!!!!!!!!!" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      Projects - Add js?
+              <a class="nav-link dropdown-toggle" href="/projects" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      Projects
               </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                   {% for name in projects %}
-                  <a class="dropdown-item" href="#!!!!!!!!!!!!!">{{name}}}</a>
+		  <a class="dropdown-item" href="/project/{{ name }}">{{ name }}}</a>
                   {% endfor %}
                 </div>
             </li>
-            <li><a href="#!!!!!!!!!!!!!">Invites</a>
+            <li><a href="/invites">Invites</a>
             </li>
         </ul>
     </div>
