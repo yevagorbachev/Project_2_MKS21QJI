@@ -19,42 +19,6 @@ login_manager.login_view = 'login'
 login_manager.login_message = 'Please Log In to view this page!'
 login_manager.login_message_category = 'danger'
 
-@app.route("/welcome")
-def welcome():
-    return render_template('invites.html')
-
-@app.route('/newtask', methods=['POST'])
-#this function needs to be redone to fit into database stuff
-def addtask():
-    taskid = len(#<list of elements in a project with pid request.form['projid']>)
-    add_task(request.form['projid'], taskid, "incomplete", "", "")
-    print(taskid)
-    return json.dumps({'id': taskid})
-
-@app.route('/edittask', methods=['GET', 'POST'])
-def edittask():
-    task = [-1, -1, "", "", ""]
-    if request.method == 'GET':
-        taskid = int(request.args['id'])
-        #the following code should be changed to database fetch code
-        #==========
-        for entry in testdata:
-            if entry[0] == taskid:
-                task = entry
-        #==========
-        return '<input type="hidden" id="id" value="{}"><input type="text" id="status" value="{}"><br><textarea id="content">{}</textarea><br><input type="date" id="deadline" value="{}"><br><button class="btn btn-primary" id="push">Push Edits</button>'.format(task[0], task[2], task[3], task[4])
-    else:
-        taskid = int(request.form['id'])
-        #the following code should be changed to database update code
-        #==========
-        for entry in testdata:
-            if entry[0] == taskid:
-                entry[2] = request.form['stat']
-                entry[3] = request.form['content']
-                entry[4] = request.form['deadline']
-        #==========
-                return "{}-<b>{}</b>: <i>{}</i>".format(request.form['deadline'], request.form['content'], request.form['stat'])
-
 # app configurations
 app.config['SECRET_KEY'] = (urandom(64))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -219,7 +183,7 @@ def edit():
         flash("Abandoned project: "+ project)
     return redirect(url_for("projects"))
 
-@app.route('/addtask', methods=['POST'])
+@app.route('/newtask', methods=['POST'])
 def addtask():
     p = int(request.form["projid"])
     check_manager = get_project(project)
