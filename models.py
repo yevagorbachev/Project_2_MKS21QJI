@@ -1,27 +1,43 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import UniqueConstraint
 
 db = SQLAlchemy()
 
 class User(db.Model):
     # columns
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(80), nullable=False)
+    username = db.Column(db.Text, unique=True, nullable=False)
+    password = db.Column(db.Text, nullable=False)
+    token = db.Column(db.Text)
 
-    def __init__(self, username, password):
+
+    def __init__(self, username, password, tokentype):
         self.username = username
         self.password = password
+
+class Invites(db.Model):
+    # columns
+    id = db.Column(db.Integer, primary_key=True)
+    project = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    status = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, project, user, status):
+        self.project = project
+        self.user = user
+        self.status = 0
 
 class Project(db.Model):
     # columns
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
+    name = db.Column(db.Text, unique=True, nullable=False)
     status = db.Column(db.Integer, nullable=False)
     manager = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    teams = db.Column(db.String(80), nullable=False)
-    blurb = db.Column(db.String(80), nullable=False)
-    description = db.Column(db.String(80), nullable=False)
-    log = db.Column(db.String(80))
+    teams = db.Column(db.Text)
+    blurb = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    log = db.Column(db.Text)
+    calendarid = db.Column(db.Text)
 
     def __init__(self, name, status, manager, teams, blurb, description, log):
         self.name = name
@@ -35,13 +51,13 @@ class Project(db.Model):
 class Task(db.Model):
     # columns
     id = db.Column(db.Integer, primary_key=True)
-    projid = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
-    status = db.Column(db.String(80), nullable=False)
-    content = db.Column(db.String(80), nullable=False)
-    deadline = db.Column(db.String(80), nullable=False)
+    project = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    status = db.Column(db.Text, nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    deadline = db.Column(db.Text, nullable=False)
 
-    def __init__(self, projid, status, content, deadline):
-        self.projid = projid
+    def __init__(self, project, status, content, deadline):
+        self.project = project
         self.status = status
         self.content = content
         self.deadline = deadline
@@ -51,6 +67,8 @@ class Assignment(db.Model):
     userid = db.Column(db.ForeignKey('user.id'))
     projid = db.Column(db.ForeignKey('project.id'))
     taskid = db.Column(db.ForeignKey('task.id'))
+
+    UniqueConstraint(userid,projid,taskid)
 
     user = db.relationship('User', foreign_keys=[userid])
     project = db.relationship('Project', foreign_keys=[projid])
@@ -67,10 +85,12 @@ class Employment(db.Model):
     userid = db.Column(db.ForeignKey('user.id'))
     team = db.Column(db.Integer)
 
+    UniqueConstraint(projid,userid)
+
     project = db.relationship('Project', foreign_keys=[projid])
     user = db.relationship('User', foreign_keys=[userid])
 
-    def __init__(self, project, user, team):
+    def __init__(self, project, user):
         self.project = project
         self.user = user
-        self.team = team
+        self.team = None
