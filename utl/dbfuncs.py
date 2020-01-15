@@ -7,6 +7,9 @@ def get_user(**kwargs):
 def get_project(**kwargs):
     return Project.query.filter_by(name=kwargs['uname']).first()
 
+def get_user_project(**kwargs):
+    return Employment.query.filter_by(manager=kwargs['uid']).first()
+
 def verify_user(**kwargs):
     print(kwargs)
     check_user = User.query.filter_by(username=kwargs['uname']).first()
@@ -73,9 +76,10 @@ def join_project(**kwargs):
 def add_project(**kwargs):
     check_pname = Project.query.filter_by(name=pname).first()
     if(check_pname != None):
-        new_project = Project(kwargs['pname'], 0, kwargs['manager'], kwargs['teams'], kwargs['blurb'], kwargs['description'], kwargs['log'])
+        new_project = Project(kwargs['pname'], 0, kwargs['manager'].id, kwargs['teams'], kwargs['blurb'], kwargs['description'], kwargs['log'])
         db.session.add(new_project)
-        db.session.commit()
+        db.session.commit(project=new_project.id,user=kwargs['manager'])
+        join_project()
         return 1
     return 0
 

@@ -6,9 +6,9 @@ db = SQLAlchemy()
 class User(db.Model):
     # columns
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(80), nullable=False)
-    token = db.Column(db.String(80))
+    username = db.Column(db.Text, unique=True, nullable=False)
+    password = db.Column(db.Text, nullable=False)
+    token = db.Column(db.Text)
 
 
     def __init__(self, username, password, tokentype):
@@ -30,14 +30,14 @@ class Invites(db.Model):
 class Project(db.Model):
     # columns
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
+    name = db.Column(db.Text, unique=True, nullable=False)
     status = db.Column(db.Integer, nullable=False)
     manager = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    teams = db.Column(db.String(80))
-    blurb = db.Column(db.String(80), nullable=False)
-    description = db.Column(db.String(80), nullable=False)
-    log = db.Column(db.String(80))
-    calendarid = db.Column(db.Integer)
+    teams = db.Column(db.Text)
+    blurb = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    log = db.Column(db.Text)
+    calendarid = db.Column(db.Text)
 
     def __init__(self, name, status, manager, teams, blurb, description, log):
         self.name = name
@@ -52,9 +52,9 @@ class Task(db.Model):
     # columns
     id = db.Column(db.Integer, primary_key=True)
     project = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
-    status = db.Column(db.String(80), nullable=False)
-    content = db.Column(db.String(80), nullable=False)
-    deadline = db.Column(db.String(80), nullable=False)
+    status = db.Column(db.Text, nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    deadline = db.Column(db.Text, nullable=False)
 
     def __init__(self, project, status, content, deadline):
         self.project = project
