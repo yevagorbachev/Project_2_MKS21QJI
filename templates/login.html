@@ -1,18 +1,10 @@
 {% extends "base_sign.html" %}
 
-<!-- Extra CSS -->
-{% block style %}
-  #login {text-align: center;}
-  .sub {padding: 10px; border-radius: 4px; background-color: #989898;
-        border: none; color: white; text-align: center; display: inline-block;
-        font-size: 16px; margin: 4px 2px; cursor: pointer;}
-{% endblock %}
-
 {% block content %}
 
-<div class="container font-weight-bold" id="login">
+<div class="container">
   <h1>Login</h1>
-  <form action='#!!!!!!!!!!!!!' method="POST">
+  <form class="font-weight-bold" action='#!!!!!!!!!!!!!' method="POST">
       Username:<br>
       <input type="text" name="username"><br>
       Password:<br>
@@ -20,5 +12,6 @@
       <br><br>
       <input class="sub" type="submit" value="Submit">
   </form><br>
+  <a href="#!!!!!!!!!!!">Need to create a new account?</a>
 </div>
 {% endblock %}
