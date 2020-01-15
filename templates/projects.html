@@ -6,6 +6,8 @@
   #profile {padding-left: 270px;}
   h1 {padding-top: 50px;}
   .proj {color: black; font-size: 17px;}
+  #box {width: 300px; height: 100px; padding: 15px;
+        box-shadow: 10px 10px 5px grey;}
 {% endblock %}
 
 {% block content %}
@@ -13,12 +15,12 @@
 <div class="container" id="profile">
   <h1>My Projects</h1>
     {% for name,description in projects %}
-    <div class="container p-2 my-4 ml-2 border">
+    <div class="container p-2 my-4 ml-2 border" id="box">
       <a class="proj font-weight-bold" href="#!!!!!!!">{{name}}</a>
       <p class="mx-3">{{description}}</p>
     </div>
     {% endfor %}
-    <div class="container p-2 my-4 ml-2 border">
+    <div class="container p-2 my-4 ml-2 border" id="box">
       <a class="proj font-weight-bold" href="#!!!!!!!">Project EXAMPLE - Delete Later</a>
       <p class="mx-3">This is the description.</p>
     </div>
