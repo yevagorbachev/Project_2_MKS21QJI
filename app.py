@@ -5,6 +5,7 @@
 
 from flask import *
 from os import urandom
+import utl
 
 
 app = Flask(__name__)
@@ -21,8 +22,8 @@ def welcome():
 @app.route('/newtask', methods=['POST'])
 #this function needs to be redone to fit into database stuff
 def addtask():
-    taskid = len(testdata)
-    testdata.append([taskid, request.form['projid'], "incomplete", "", ""])
+    taskid = len(#<list of elements in a project with pid request.form['projid']>)
+    add_task(request.form['projid'], taskid, "incomplete", "", "")
     print(taskid)
     return json.dumps({'id': taskid})
 
