@@ -15,6 +15,18 @@ class User(db.Model):
         self.username = username
         self.password = password
 
+class Invites(db.Model):
+    # columns
+    id = db.Column(db.Integer, primary_key=True)
+    project = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    status = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, project, user, status):
+        self.project = project
+        self.user = user
+        self.status = 0
+
 class Project(db.Model):
     # columns
     id = db.Column(db.Integer, primary_key=True)
@@ -39,12 +51,13 @@ class Project(db.Model):
 class Task(db.Model):
     # columns
     id = db.Column(db.Integer, primary_key=True)
+    project = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     status = db.Column(db.String(80), nullable=False)
     content = db.Column(db.String(80), nullable=False)
     deadline = db.Column(db.String(80), nullable=False)
 
-    def __init__(self, status, content, deadline):
-        self.projid = projid
+    def __init__(self, project, status, content, deadline):
+        self.project = project
         self.status = status
         self.content = content
         self.deadline = deadline
@@ -77,7 +90,7 @@ class Employment(db.Model):
     project = db.relationship('Project', foreign_keys=[projid])
     user = db.relationship('User', foreign_keys=[userid])
 
-    def __init__(self, project, user, team):
+    def __init__(self, project, user):
         self.project = project
         self.user = user
-        self.team = team
+        self.team = None
