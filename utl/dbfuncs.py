@@ -54,27 +54,27 @@ def get_invites(**kwargs):
     return Invites.query.filter_by(user=kwargs['user'].id).all()
 
 def add_invite(**kwargs):
-    new_invite = Invite(kwargs['project'].id, kwargs['user'].id, None)
+    new_invite = Invites(kwargs['project'].id, kwargs['user'].id, None)
     db.session.add(new_invite)
     db.session.commit()
     return
 
 def accept_invite(**kwargs):
     i = Invites.query.filter_by(user=kwargs['user'].id,project=kwargs['project'].id).first()
-    i.status = 0;
-    join_project(user=uname, project=p)
+    i.status = 1;
+    join_project(user=kwargs['user'], project=kwargs['project'])
     db.session.commit()
     return
 
 def decline_invite(**kwargs):
     i = Invites.query.filter_by(user=kwargs['user'].id,project=kwargs['project'].id).first()
-    i.status = -1;
+    db.session.delete(i)
     db.session.commit()
     return
 
 def join_project(**kwargs):
-    employ = Employment(kwargs['user'].id, kwargs['project'].id)
-    db.seesion.add(employ)
+    employ = Employment(kwargs['project'].id,kwargs['user'].id)
+    db.session.add(employ)
     db.session.commit()
     return
 

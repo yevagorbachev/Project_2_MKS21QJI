@@ -91,6 +91,6 @@ class Employment(db.Model):
     user = db.relationship('User', foreign_keys=[userid])
 
     def __init__(self, projid, userid):
-        self.projid = project
+        self.projid = projid
         self.userid = userid
         self.team = None

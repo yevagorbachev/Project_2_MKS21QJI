@@ -115,27 +115,38 @@ def invites():
 
     print(get_user(uname=session['username']))
     i = get_invites(user=get_user(uname=session['username']))
+
     current = []
     for invite in i:
         if invite.status == 0:
             current.append(invite.project)
+
+    current1 = []
+    for i in current:
+        current1.append(Project.query.filter_by(id=i).first())
+        print(current1)
+
+    current2 = []
+    for i in current1:
+        current2.append(i.name)
+
     return render_template('invites.html',
-                            invites=current)
+                            invites=current2)
 
 @app.route('/invites', methods=['POST'])
 def invitesform():
     if('username' not in session):
         return redirect(url_for("login"))
 
-    project = request.form["project"]
+    p = request.form["project"]
     response = request.form["response"]
-
-    if (response == "yes"):
-        accept_invite(get_user(uname=session['username']), project)
-        flash("Successfully joined project: "+ project, 'success')
+    print(p)
+    if (response == "y"):
+        accept_invite(user=get_user(uname=session['username']), project=get_project(pname=p))
+        flash("Successfully joined project: "+ p, 'success')
     else:
-        decline_invite(get_user(uname=session['username']), project)
-        flash("Rejected invite to project: "+ project, 'primary')
+        decline_invite(user=get_user(uname=session['username']), project=get_project(pname=p))
+        flash("Rejected invite to project: "+ p, 'primary')
 
     return redirect(url_for("invites"))
 
@@ -145,14 +156,14 @@ def projects():
         return redirect(url_for("login"))
 
     e = get_user_project(uid = get_user(uname=session['username']).id)
-    print(get_user(uname=session['username']).id)
+    print(e)
     current = []
     for employed in e:
         current.append(employed.project)
 
     m = Project.query.filter_by(manager=get_user(uname=session['username']).id).all()
 
-    print(m)
+    # print(m)
     return render_template('projects.html',
                             myprojects = current,
                             managedprojects = m)
@@ -270,12 +281,20 @@ def invite():
 
     p = request.form["project"]
 
-    check_manager = get_project(project)
+    print(p)
+    check_manager = get_project(pname=p)
     if (check_manager.manager != get_user(uname=session['username']).id):
         flash("You are not the manager of this project",'danger')
         return redirect(url_for("projects"))
-    u = request.form["user"]
-    add_invite(project=get_project(p),user=get_user(u))
+
+    u = request.form["uname"]
+
+    if(get_user(uname=u) == None):
+        flash("There is no user with that name",'danger')
+        return redirect(url_for("projects"))
+
+    add_invite(project=get_project(pname=p),user=get_user(uname=u))
+    flash("Invite sent",'success')
     return redirect(url_for("projects"))
 
 app.run(debug=True)
