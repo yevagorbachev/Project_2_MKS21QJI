@@ -32,7 +32,6 @@ const edittask = function(e) {
 const pushedits = function(e) {
 	let projid = document.getElementById("projid").value;
 	let id = document.getElementById("id").value;
-	let stat = document.getElementById("status").value;
 	let content = document.getElementById("content").value;
 	let deadline = document.getElementById("deadline").value;
 	$.ajax({
@@ -82,7 +81,7 @@ const newtask = function(e) {
 const create = function() {
 	let assignment = document.createElement("div");
 	assignment.id = 'temp';
-	assignment.innerHTML = 'Assignee: <input type="text" id="username"><button class="btn btn-primary" id="add">Assign</button>';
+	assignment.innerHTML = 'Assignee: <input type="text" id="username"><button class="btn btn-secondary" id="add">Assign</button>';
 	document.getElementById("tasks").appendChild(assignment);
 	let submit = document.getElementById('add');
 	submit.addEventListener('click', newtask);

@@ -4,8 +4,11 @@ from models import db, User, Invites, Project, Task, Assignment, Employment
 def get_user(**kwargs):
     return User.query.filter_by(username=kwargs['uname']).first()
 
-def get_project(**kwargs):
+def get_project_by_id(**kwargs):
     return Project.query.filter_by(id=kwargs['pid']).first()
+
+def get_project_by_name(**kwargs):
+    return Project.query.filter_by(name=kwargs['pname']).first()
 
 def get_user_project(**kwargs):
     return Employment.query.filter_by(userid=kwargs['uid']).all()
@@ -108,7 +111,7 @@ def abandon_project(**kwargs):
     return
 
 def get_tasks(**kwargs):
-    return Assignment.query.filter_by(projid=kwargs['projid']).all()
+    return Task.query.filter_by(project=kwargs['projid']).all()
 
 def get_task(**kwargs):
     return Task.query.filter_by(id=kwargs['taskid']).first()

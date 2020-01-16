@@ -142,10 +142,10 @@ def invitesform():
     response = request.form["response"]
     print(p)
     if (response == "y"):
-        accept_invite(user=get_user(uname=session['username']), project=get_project(pname=p))
+        accept_invite(user=get_user(uname=session['username']), project=get_project_by_name(pname=p))
         flash("Successfully joined project: "+ p, 'success')
     else:
-        decline_invite(user=get_user(uname=session['username']), project=get_project(pname=p))
+        decline_invite(user=get_user(uname=session['username']), project=get_project_by_name(pname=p))
         flash("Rejected invite to project: "+ p, 'primary')
 
     return redirect(url_for("invites"))
@@ -195,12 +195,13 @@ def project(pid):
 
 
     project = Project.query.filter_by(id=pid).first()
-    print(project)
+    t = get_tasks(projid=pid)
+    print(t)
     return render_template('proj_info.html',
                             pid=pid,
                             name=project.name,
                             description=project.description,
-                            tasks=get_tasks(projid=pid))
+                            tasks=t)
 
 @app.route('/task_status', methods=['POST'])
 def task_status():
@@ -225,9 +226,9 @@ def edit():
     project = request.form["project"]
     status = request.form["status"]
 
-    check_manager = get_project(project)
+    check_manager = get_project_by_name(pname=project)
     if (check_manager.manager != get_user(uname=session['username']).id):
-        flash("You are not the manager of this project", 'danger')
+        flash("You are not the manager of this project",'danger')
         return redirect(url_for("projects"))
 
     if (status == "1"):
@@ -240,11 +241,12 @@ def edit():
 
 @app.route('/newtask', methods=['POST'])
 def addtask():
+    print(request.form)
     if('username' not in session):
         return redirect(url_for("login"))
 
     p = int(request.form["projid"])
-    check_manager = get_project(pid=p)
+    check_manager = get_project_by_id(pid=p)
     if (check_manager.manager != get_user(uname=session['username']).id):
         raise NoPerms('You are not the manager of this project')
     u = request.form['user']
@@ -261,7 +263,7 @@ def edittask():
 
     if request.method == 'GET':
         p = request.args["projid"]
-        check_manager = get_project(pid=p)
+        check_manager = get_project_by_id(pid=p)
         if (check_manager.manager != get_user(uname=session['username']).id):
             raise NoPerms('You are not the manager of this project')
         task = get_task(taskid=request.args['id'])
@@ -282,7 +284,7 @@ def invite():
     p = request.form["project"]
 
     print(p)
-    check_manager = get_project(pname=p)
+    check_manager = get_project_by_name(pname=p)
     if (check_manager.manager != get_user(uname=session['username']).id):
         flash("You are not the manager of this project",'danger')
         return redirect(url_for("projects"))
@@ -293,7 +295,7 @@ def invite():
         flash("There is no user with that name",'danger')
         return redirect(url_for("projects"))
 
-    add_invite(project=get_project(pname=p),user=get_user(uname=u))
+    add_invite(project=get_project_by_name(pname=p),user=get_user(uname=u))
     flash("Invite sent",'success')
     return redirect(url_for("projects"))
 
