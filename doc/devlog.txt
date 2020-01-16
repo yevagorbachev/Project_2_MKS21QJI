@@ -46,6 +46,9 @@ DEVLOG UPDATES: [
   - Added requisite information for Google Calendar integration
 ]
 
+elizabethD – 2020-01-15 08:40
+Changed shadows and added home
+
 amandaC -- 2020-01-15 20:39
 Tested login and fixed bugs
 Fixed footer to match rest of website
