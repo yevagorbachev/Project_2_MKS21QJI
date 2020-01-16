@@ -1,5 +1,5 @@
 from flask import *
-from models import db, User, Project, Task, Assignment, Employment
+from models import db, User, Invites, Project, Task, Assignment, Employment
 
 def get_user(**kwargs):
     return User.query.filter_by(username=kwargs['uname']).first()
@@ -8,7 +8,7 @@ def get_project(**kwargs):
     return Project.query.filter_by(name=kwargs['uname']).first()
 
 def get_user_project(**kwargs):
-    return Employment.query.filter_by(manager=kwargs['uid']).first()
+    return Employment.query.filter_by(userid=kwargs['uid']).all()
 
 def verify_user(**kwargs):
     print(kwargs)

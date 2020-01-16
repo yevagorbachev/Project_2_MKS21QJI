@@ -4,9 +4,9 @@
 #2020-01-16
 
 from flask import *
-from flask_login import LoginManager, login_required, current_user, login_user, logout_user
+from flask_login import LoginManager, login_required, login_user, logout_user
 from os import urandom
-from models import db, User, Project, Task, Assignment, Employment
+from models import db, User, Invites, Project, Task, Assignment, Employment
 from utl.dbfuncs import *
 from utl.errors import NoPerms
 
@@ -18,6 +18,10 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 login_manager.login_message = 'Please Log In to view this page!'
 login_manager.login_message_category = 'danger'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 # app configurations
 app.config['SECRET_KEY'] = (urandom(64))
@@ -84,7 +88,7 @@ def accountform():
     old_password = request.form["old_password"]
     new_password = request.form["new_password"]
 
-    if (change_password(current_user,old_password,new_password)):
+    if (change_password(get_user(uname=session['username']),old_password,new_password)):
         flash("Successfully changed password")
         return redirect(url_for("projects"))
     else:
@@ -92,7 +96,8 @@ def accountform():
 
 @app.route('/invites', methods=['GET'])
 def invites():
-    i = get_invites(user = current_user)
+    print(get_user(uname=session['username']))
+    i = get_invites(user=get_user(uname=session['username']))
     current = []
     for invite in i:
         if invite.status == 0:
@@ -106,22 +111,22 @@ def invitesform():
     response = request.form["response"]
 
     if (response == "yes"):
-        accept_invite(current_user, project)
+        accept_invite(get_user(uname=session['username']), project)
         flash("Successfully joined project: "+ project)
     else:
-        decline_invite(current_user, project)
+        decline_invite(get_user(uname=session['username']), project)
         flash("Rejected invite to project: "+ project)
 
     return redirect(url_for("invites"))
 
 @app.route('/projects', methods=['GET'])
 def projects():
-    e = get_user_project(uid = current_user)
+    e = get_user_project(uid = get_user(uname=session['username']).id)
     current = []
     for employed in e:
         current.append(employed.project)
 
-    m = Project.query.filter_by(manager=current_user.id).all()
+    m = Project.query.filter_by(manager=get_user(uname=session['username']).id).all()
 
     return render_template('projects.html',
                             myprojects = current,
@@ -130,7 +135,7 @@ def projects():
 @app.route('/create', methods=['POST'])
 def create():
     name = request.form["name"]
-    manager = current_user.id
+    manager = get_user(uname=session['username']).id
     teams = request.form["teams"]
     blurb = request.form["blurb"]
     description = request.form["description"]
@@ -167,7 +172,7 @@ def edit():
     status = request.form["status"]
 
     check_manager = get_project(project)
-    if (check_manager.manager != current_user.id):
+    if (check_manager.manager != get_user(uname=session['username']).id):
         flash("You are not the manager of this project")
         return redirect(url_for("projects"))
 
@@ -183,7 +188,7 @@ def edit():
 def addtask():
     p = int(request.form["projid"])
     check_manager = get_project(project)
-    if (check_manager.manager != current_user.id):
+    if (check_manager.manager != get_user(uname=session['username']).id):
         raise NoPerms('You are not the manager of this project')
     u = request.form["user"]
     s = request.form["status"]
@@ -197,7 +202,7 @@ def edittask():
     if request.method == 'GET':
         p = request.form["project"]
         check_manager = get_project(project)
-        if (check_manager.manager != current_user.id):
+        if (check_manager.manager != get_user(uname=session['username']).id):
             raise NoPerms('You are not the manager of this project')
         task = get_task(int(request.args['id']))
         return '<input type="hidden" id="id" value="{}"><textarea id="content">{}</textarea><br><input type="date" id="deadline" value="{}"><br><button class="btn btn-primary" id="push">Push Edits</button>'.format(task.id, task.content, task.deadline)
@@ -214,7 +219,7 @@ def invite():
     p = request.form["project"]
 
     check_manager = get_project(project)
-    if (check_manager.manager != current_user.id):
+    if (check_manager.manager != get_user(uname=session['username']).id):
         flash("You are not the manager of this project")
         return redirect(url_for("projects"))
     u = request.form["user"]

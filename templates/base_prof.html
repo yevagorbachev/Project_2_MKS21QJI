@@ -32,6 +32,16 @@
     </style>
 
     <body>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                    </div>
+                    <br>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
       <!-- Sidebar -->
     <div id="sidebar-wrapper" *>
         <ul class="sidebar-nav">
@@ -50,6 +60,8 @@
                 </div>
             </li>
             <li><a href="/invites">Invites</a>
+            </li>
+            <li><a href="/logout">Logout</a>
             </li>
         </ul>
     </div>
