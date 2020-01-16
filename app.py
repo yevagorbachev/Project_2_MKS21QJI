@@ -239,42 +239,57 @@ def edit():
         flash("Abandoned project: "+ project,'dark')
     return redirect(url_for("projects"))
 
+@app.route('/newtask', methods=['GET'])
+def newtask():
+    if ('username' not in session):
+        return redirect(url_for("login"))
+    p = request.args['projid']
+    check_manager = get_project_by_id(pid=p)
+    if (check_manager.manager != get_user(uname=session['username']).id):
+        flash('You are not the manager of this project', 'danger')
+        return redirect(url_for('projects/{}'.format(p)))
+    return render_template('newtask.html',
+            projid=p);
+
 @app.route('/newtask', methods=['POST'])
 def addtask():
     print(request.form)
     if('username' not in session):
         return redirect(url_for("login"))
 
-    p = int(request.form["projid"])
+    p = request.form["projid"]
     check_manager = get_project_by_id(pid=p)
     if (check_manager.manager != get_user(uname=session['username']).id):
         raise NoPerms('You are not the manager of this project')
     u = request.form['user']
+    c = request.form['content']
+    d = request.form['deadline']
     s = 'incomplete'
-    c = ''
-    d = ''
     taskid = add_task(pname=p,uname=u,status=s,content=c,deadline=d)
-    return json.dumps({'id' : taskid})
+    return redirect(url_for("/projects/{}".format(p)))
 
-@app.route('/edittask', methods=['GET', 'POST'])
+@app.route('/edittask', methods=['GET'])
 def edittask():
     if('username' not in session):
         return redirect(url_for("login"))
+    p = request.args["projid"]
+    check_manager = get_project_by_id(pid=p)
+    if (check_manager.manager != get_user(uname=session['username']).id):
+        flash('You are not the manager of this project', 'danger')
+        return redirect(url_for('projects'))
+    task = get_task(taskid=request.args['id'])
+    return render_template('edittask.html',
+            taskid=task.id
+            content=task.content,
+            deadline=task.deadline)
 
-    if request.method == 'GET':
-        p = request.args["projid"]
-        check_manager = get_project_by_id(pid=p)
-        if (check_manager.manager != get_user(uname=session['username']).id):
-            raise NoPerms('You are not the manager of this project')
-        task = get_task(taskid=request.args['id'])
-        return '<input type="hidden" id="id" value="{}"><textarea id="content">{}</textarea><br><input type="date" id="deadline" value="{}"><br><button class="btn btn-primary" id="push">Push Edits</button>'.format(task.id, task.content, task.deadline)
-    else:
-        t = int(request.form["id"])
+@app.route('/edittask', methods=['POST'])
+def pushedits
+        t = request.form["id"]
         c = request.form["content"]
         d = request.form["deadline"]
         edit_task(task=t,content=c,deadline=d)
-        task = get_task(t);
-        return '{} - <i>{}</i>: {}'.format(d, task.status, c)
+        return redirect(url_for('/projects/{}'.format(get_task(t).project)))
 
 @app.route('/invite', methods=['POST'])
 def invite():

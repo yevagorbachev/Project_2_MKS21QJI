@@ -31,6 +31,13 @@
 	    {% endfor %}
     </div>
     <button id="create" class="btn btn-secondary">Create a New Task</button>
+	<script>
+		const redir = function() {
+			let projid = document.getElementById('projid');
+			window.location.href = `/newtask?projid=${projid.value}`;
+		};
+		let button = document.getElementById("create");
+		button.addEventListener("click", redir);
+	</script>
 </div>
-<script src="/static/scripts/tasks.js"></script>
 {% endblock %}

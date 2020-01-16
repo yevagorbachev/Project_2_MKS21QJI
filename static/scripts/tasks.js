@@ -37,7 +37,7 @@ const pushedits = function(e) {
 	$.ajax({
 		type: 'POST',
 		url: '/edittask',
-		data: `projid=${projid}&id=${id}&stat=${stat}&content=${content}&deadline=${deadline}&user=${user}`,
+		data: `projid=${projid}&id=${id}&content=${content}&deadline=${deadline}`,
 		success: function(html) {
 			let task = document.getElementById(`${id}`);
 			task.innerHTML = html;
