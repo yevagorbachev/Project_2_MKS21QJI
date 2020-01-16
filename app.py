@@ -37,8 +37,8 @@ with app.app_context():
 
 @app.route('/', methods=['GET'])
 def index():
-    if('username' in session):
-        return redirect(url_for("projects"))
+    if('username' not in session):
+        return redirect(url_for("home"))
     else:
         return redirect(url_for("login"))
 
@@ -56,7 +56,6 @@ def loginform():
         flash('Logged in successfully!', 'success')
         return redirect(url_for("projects"))
     else:
-        flash("Failed to log in")
         return redirect(url_for("login"))
 
 @app.route('/logout')
@@ -83,19 +82,36 @@ def registerform():
         add_user(uname=user, password=password)
         return redirect(url_for("login"))
 
+@app.route('/home', methods=['GET'])
+def home():
+    if('username' not in session):
+        return redirect(url_for("login"))
+
+    return render_template('home.html')
+
+@app.route('/account', methods=['GET'])
+def account():
+    if('username' not in session):
+        return redirect(url_for("login"))
+
+    return render_template('account.html')
+
 @app.route('/account', methods=['POST'])
 def accountform():
-    old_password = request.form["old_password"]
-    new_password = request.form["new_password"]
+    if('username' not in session):
+        return redirect(url_for("login"))
 
-    if (change_password(get_user(uname=session['username']),old_password,new_password)):
-        flash("Successfully changed password")
-        return redirect(url_for("projects"))
-    else:
-        return redirect(url_for("account"))
+    op = request.form["old_password"]
+    np = request.form["new_password"]
+
+    change_password(user=get_user(uname=session['username']),old_password=op,new_password=np)
+    return redirect(url_for("account"))
 
 @app.route('/invites', methods=['GET'])
 def invites():
+    if('username' not in session):
+        return redirect(url_for("login"))
+
     print(get_user(uname=session['username']))
     i = get_invites(user=get_user(uname=session['username']))
     current = []
@@ -107,20 +123,27 @@ def invites():
 
 @app.route('/invites', methods=['POST'])
 def invitesform():
+    if('username' not in session):
+        return redirect(url_for("login"))
+
     project = request.form["project"]
     response = request.form["response"]
 
     if (response == "yes"):
         accept_invite(get_user(uname=session['username']), project)
-        flash("Successfully joined project: "+ project)
+        flash("Successfully joined project: "+ project, 'success')
     else:
         decline_invite(get_user(uname=session['username']), project)
-        flash("Rejected invite to project: "+ project)
+        flash("Rejected invite to project: "+ project, 'primary')
 
     return redirect(url_for("invites"))
 
 @app.route('/projects', methods=['GET'])
 def projects():
+    if('username' not in session):
+        return redirect(url_for("login"))
+
+    print(session)
     e = get_user_project(uid = get_user(uname=session['username']).id)
     current = []
     for employed in e:
@@ -134,6 +157,9 @@ def projects():
 
 @app.route('/create', methods=['POST'])
 def create():
+    if('username' not in session):
+        return redirect(url_for("login"))
+
     name = request.form["name"]
     manager = get_user(uname=session['username']).id
     teams = request.form["teams"]
@@ -141,13 +167,16 @@ def create():
     description = request.form["description"]
     log = request.form["log"]
     if (add_project(name, manager, teams, blurb, description, log)):
-        flash("Created project: "+ name)
+        flash("Created project: "+ name, 'primary')
     else:
-        flash("Project name not unique: "+ name)
+        flash("Project name not unique: "+ name, 'danger')
     return redirect(url_for("project"))
 
 @app.route('/projects/<pid>', methods=['GET'])
 def project(pid):
+    if('username' not in session):
+        return redirect(url_for("login"))
+
     project = Project.query.filter_by(id=pid).first()
     return render_template('id.html',
                             name=project.name,
@@ -156,36 +185,45 @@ def project(pid):
 
 @app.route('/task_status', methods=['POST'])
 def task_status():
+    if('username' not in session):
+        return redirect(url_for("login"))
+
     task = request.form["task"]
     status = request.form["status"]
     if (status == "1"):
         complete_task(task)
-        flash("Completed task: "+ task)
+        flash("Completed task: "+ task, 'success')
     if (status == "-1"):
         delete_task(task)
-        flash("Abandoned task: "+ task)
+        flash("Abandoned task: "+ task, 'dark')
     return redirect(url_for("projects"))
 
 @app.route('/edit', methods=['POST'])
 def edit():
+    if('username' not in session):
+        return redirect(url_for("login"))
+
     project = request.form["project"]
     status = request.form["status"]
 
     check_manager = get_project(project)
     if (check_manager.manager != get_user(uname=session['username']).id):
-        flash("You are not the manager of this project")
+        flash("You are not the manager of this project", 'danger')
         return redirect(url_for("projects"))
 
     if (status == "1"):
         complete_project(project)
-        flash("Completed project: "+ project)
+        flash("Completed project: "+ project,'success')
     if (status == "-1"):
         abandon_project(project)
-        flash("Abandoned project: "+ project)
+        flash("Abandoned project: "+ project,'dark')
     return redirect(url_for("projects"))
 
 @app.route('/newtask', methods=['POST'])
 def addtask():
+    if('username' not in session):
+        return redirect(url_for("login"))
+
     p = int(request.form["projid"])
     check_manager = get_project(project)
     if (check_manager.manager != get_user(uname=session['username']).id):
@@ -199,6 +237,9 @@ def addtask():
 
 @app.route('/edittask', methods=['GET', 'POST'])
 def edittask():
+    if('username' not in session):
+        return redirect(url_for("login"))
+
     if request.method == 'GET':
         p = request.form["project"]
         check_manager = get_project(project)
@@ -216,11 +257,14 @@ def edittask():
 
 @app.route('/invite', methods=['POST'])
 def invite():
+    if('username' not in session):
+        return redirect(url_for("login"))
+
     p = request.form["project"]
 
     check_manager = get_project(project)
     if (check_manager.manager != get_user(uname=session['username']).id):
-        flash("You are not the manager of this project")
+        flash("You are not the manager of this project",'danger')
         return redirect(url_for("projects"))
     u = request.form["user"]
     add_invite(project=get_project(p),user=get_user(u))
