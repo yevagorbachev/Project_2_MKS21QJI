@@ -162,15 +162,18 @@ def create():
 
     name = request.form["name"]
     manager = get_user(uname=session['username']).id
-    teams = request.form["teams"]
-    blurb = request.form["blurb"]
+    #teams = request.form["teams"]
+    teams = '';
+    #blurb = request.form["blurb"]
+    blurb = '';
     description = request.form["description"]
-    log = request.form["log"]
-    if (add_project(name, manager, teams, blurb, description, log)):
+    #log = request.form["log"]
+    log = '';
+    if (add_project(pname=name, manager=manager, teams=teams, blurb=blurb, description=description, log=log)):
         flash("Created project: "+ name, 'primary')
     else:
         flash("Project name not unique: "+ name, 'danger')
-    return redirect(url_for("project"))
+    return redirect(url_for("projects"))
 
 @app.route('/projects/<pid>', methods=['GET'])
 def project(pid):
@@ -246,7 +249,7 @@ def edittask():
         if (check_manager.manager != get_user(uname=session['username']).id):
             raise NoPerms('You are not the manager of this project')
         task = get_task(int(request.args['id']))
-        return '<input type="hidden" id="id" value="{}"><textarea id="content">{}</textarea><br><input type="date" id="deadline" value="{}"><br><button class="btn btn-primary" id="push">Push Edits</button>'.format(task.id, task.content, task.deadline)
+        return '<input type="hidden" id="id" value="{}">User:<input type="text" id="user"><br><textarea id="content">{}</textarea><br><input type="date" id="deadline" value="{}"><br><button class="btn btn-primary" id="push">Push Edits</button>'.format(task.id, task.content, task.deadline)
     else:
         t = int(request.form["id"])
         c = request.form["content"]

@@ -18,7 +18,8 @@ const edit = function(e) {
 		},
 		error: function(error) {
 			console.log('could not edit task:');
-			alert(error);
+			console.log(error);
+			//alert(error);
 		}
 	});
 };
@@ -33,10 +34,11 @@ const pushedits = function(e) {
 	let stat = document.getElementById("status").value;
 	let content = document.getElementById("content").value;
 	let deadline = document.getElementById("deadline").value;
+	let user = document.getElementById("user").value;
 	$.ajax({
 		type: 'POST',
 		url: '/edittask',
-		data: `projid=${projid}&id=${id}&stat=${stat}&content=${content}&deadline=${deadline}`,
+		data: `projid=${projid}&id=${id}&stat=${stat}&content=${content}&deadline=${deadline}&user=${user}`,
 		success: function(html) {
 			let task = document.getElementById(`${id}`);
 			task.innerHTML = html;
@@ -69,7 +71,7 @@ const newtask = function(e) {
 		error: function(error) {
 			console.log('could not create new element');
 			console.log(error);
-			alert(error);
+			//alert(error);
 		}
 	});
 };

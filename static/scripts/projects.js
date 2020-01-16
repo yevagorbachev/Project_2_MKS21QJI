@@ -35,9 +35,8 @@ const createproj = function(e) {
 }
 
 const create = function(e) {
-	$.ajax({
-		method: 'POST',
-		url: '/create',
-		success:
-	});
+	let form = document.getElementById('form');
+	form.innerHTML = '<form action="/create" method="post">Title:<input type="text" name="name"><br>Description:<br><textarea name="description"></textarea><br><button type="submit" class="btn btn-primary">Create</button></form>';
 }
+
+document.getElementById('create').addEventListener('click', create);
