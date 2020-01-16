@@ -1,5 +1,5 @@
 //relies on jQuery being implemented on the html page
-const form = '<form action="/create" method="post">Title:<input type="text" name="name"><br>Description:<br><textarea name="description"></textarea><br><button type="submit" class="btn btn-primary">Create</button></form>';
+const content = '<form action="/create" method="post">Title:<input type="text" name="name"><br>Description:<br><textarea name="description"></textarea><br><button type="submit" class="btn btn-primary">Create</button></form>';
 
 const adduser = function(e) {
 	let project = e.target.parentElement;
@@ -38,7 +38,7 @@ const createproj = function(e) {
 
 const create = function(e) {
 	let form = document.getElementById('form');
-	form.innerHTML = form;
+	form.innerHTML = content;
 }
 
 document.getElementById('create').addEventListener('click', create);

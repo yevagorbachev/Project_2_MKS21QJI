@@ -261,12 +261,12 @@ def addtask():
     check_manager = get_project_by_id(pid=p)
     if (check_manager.manager != get_user(uname=session['username']).id):
         raise NoPerms('You are not the manager of this project')
-    u = request.form['user']
+    u = request.form['username']
     c = request.form['content']
     d = request.form['deadline']
     s = 'incomplete'
     taskid = add_task(pname=p,uname=u,status=s,content=c,deadline=d)
-    return redirect(url_for("/projects/{}".format(p)))
+    return redirect("/projects/{}".format(p))
 
 @app.route('/edittask', methods=['GET'])
 def edittask():
@@ -289,7 +289,7 @@ def pushedits():
         c = request.form["content"]
         d = request.form["deadline"]
         edit_task(task=t,content=c,deadline=d)
-        return redirect(url_for('/projects/{}'.format(get_task(t).project)))
+        return redirect('/projects/{}'.format(get_task(t).project))
 
 @app.route('/invite', methods=['POST'])
 def invite():
