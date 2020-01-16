@@ -64,9 +64,9 @@ class Task(db.Model):
 
 class Assignment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    userid = db.Column(db.ForeignKey('user.id'))
-    projid = db.Column(db.ForeignKey('project.id'))
-    taskid = db.Column(db.ForeignKey('task.id'))
+    userid = db.Column(db.Integer,db.ForeignKey('user.id'))
+    projid = db.Column(db.Integer,db.ForeignKey('project.id'))
+    taskid = db.Column(db.Integer,db.ForeignKey('task.id'))
 
     UniqueConstraint(userid,projid,taskid)
 
@@ -74,10 +74,10 @@ class Assignment(db.Model):
     project = db.relationship('Project', foreign_keys=[projid])
     task = db.relationship('Task', foreign_keys=[taskid])
 
-    def __init__(self, user, project, task):
-        self.user = user
-        self.project = project
-        self.task = task
+    def __init__(self, userid, projid, taskid):
+        self.userid = userid
+        self.projid = projid
+        self.taskid = taskid
 
 class Employment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -90,7 +90,7 @@ class Employment(db.Model):
     project = db.relationship('Project', foreign_keys=[projid])
     user = db.relationship('User', foreign_keys=[userid])
 
-    def __init__(self, project, user):
-        self.project = project
-        self.user = user
+    def __init__(self, projid, userid):
+        self.projid = project
+        self.userid = userid
         self.team = None

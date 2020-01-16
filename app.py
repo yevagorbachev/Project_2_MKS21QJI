@@ -143,14 +143,15 @@ def projects():
     if('username' not in session):
         return redirect(url_for("login"))
 
-    print(session)
     e = get_user_project(uid = get_user(uname=session['username']).id)
+    print(get_user(uname=session['username']).id)
     current = []
     for employed in e:
         current.append(employed.project)
 
     m = Project.query.filter_by(manager=get_user(uname=session['username']).id).all()
 
+    print(m)
     return render_template('projects.html',
                             myprojects = current,
                             managedprojects = m)
@@ -180,11 +181,13 @@ def project(pid):
     if('username' not in session):
         return redirect(url_for("login"))
 
+
     project = Project.query.filter_by(id=pid).first()
-    return render_template('id.html',
+    print(project)
+    return render_template('proj_info.html',
                             name=project.name,
                             description=project.description,
-                            tasks=get_tasks(pid))
+                            tasks=get_tasks(projid=pid))
 
 @app.route('/task_status', methods=['POST'])
 def task_status():

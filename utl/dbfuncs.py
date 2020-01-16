@@ -83,7 +83,7 @@ def add_project(**kwargs):
     if(check_pname == None):
         new_project = Project(kwargs['pname'], 0, kwargs['manager'], kwargs['teams'], kwargs['blurb'], kwargs['description'], kwargs['log'])
         db.session.add(new_project)
-        db.session.commit(project=new_project.id,user=kwargs['manager'])
+        db.session.commit()
         # join_project()
         return 1
     return 0
@@ -108,7 +108,7 @@ def abandon_project(**kwargs):
     return
 
 def get_tasks(**kwargs):
-    return Assignment.query.filter_by(project=kwargs['pid'])
+    return Assignment.query.filter_by(projid=kwargs['projid']).all()
 
 def add_task(**kwargs):
     proj = Project.query.filter_by(name=kwargs['pname']).first()
