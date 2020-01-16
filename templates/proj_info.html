@@ -29,6 +29,17 @@
 		    <p>{{ task.deadline }} - <i>{{ task.status }}</i>: {{ task.name }}</p>
 	    </div>
 	    {% endfor %}
+	<script>
+		const edit = function(e) {
+			let task = e.target;
+			let projid = document.getElementById('projid').value;
+			window.location.href= `/edittask?projid=${projid}&id=${task.id}`
+		};
+		let tasks = document.getElementsByClassName('task');
+		for(var i = 0; i < tasks.length; i++) {
+			tasks[i].addEventListener();
+		}
+	</script>
     </div>
     <button id="create" class="btn btn-secondary">Create a New Task</button>
 	<script>

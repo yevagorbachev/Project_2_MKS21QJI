@@ -1,0 +1,23 @@
+{% extends "base_prof.html" %}
+{% block title %}My Projects{% endblock %}
+
+<!-- Extra CSS -->
+{% block style %}
+  #profile {padding-left: 270px;}
+  h1 {padding-top: 50px;}
+  .proj {color: black; font-size: 17px;}
+{% endblock %}
+
+{% block content %}
+
+<div class="container" id="profile">
+  <h1>Create a New Project</h1>
+  <form method="post" action={{ url_for('newtask') }}>
+	  <input type="hidden" name="id" value="{{taskid}}">
+      Content: <input type="text" name="content" value="{{content}}"/><br/>
+      Deadline: <input type="date" name="deadline" value="{{deadline}}"/><br/>
+      <button type="submit" class="btn btn-dark">Submit</button>
+  </form>
+</div>
+<script src="/static/scripts/projects.js"></script>
+{% endblock %}
