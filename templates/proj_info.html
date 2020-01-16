@@ -12,6 +12,12 @@
 
 <div class="container" id="proj">
   <h1>{{name}}</h1>
+  <hr>
+    <form method="post" action={{ url_for('invite') }}>
+        <input type="text" name="uname"/>
+        <input type="hidden" name="project" value="{{name}}"/>
+        <button type="submit" class="btn btn-outline-secondary btn-sm">Invite</button>
+    </form>
     <div class="container p-2 my-4 ml-2">
       <p class="mx-3">{{description}}</p>
     </div>

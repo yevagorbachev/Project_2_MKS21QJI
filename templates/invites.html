@@ -16,8 +16,15 @@
     {% for name in invites %}
     <div class="container p-5 my-4 ml-2 border">
       <p class="proj font-weight-bold">{{name}}</p>
-      <a class="choose font-weight-bolder" href='/invites/accept/{{ name }}'>Accept</a>
-      <a class="choose font-weight-bolder" href='/invites/decline/{{ name }}'>Decline</a>
+      <form method="post" action={{ url_for('invites') }}>
+          <input type="hidden" name="project" value="{{name}}"/>
+          <button type="submit" name="response" value="y" class="btn btn-outline-secondary btn-sm">Accept</button>
+          <button type="submit" name="response" value="n" class="btn btn-outline-secondary btn-sm">Decline</button>
+      </form>
+      <!--
+      <a class="choose font-weight-bolder" method="POST" name="response" href='/invites' value="y">Accept</a>
+      <a class="choose font-weight-bolder" method="POST" name="response" href='/invites' value="n">Decline</a>
+      -->
     </div>
     <br>
     {% endfor %}
