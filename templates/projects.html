@@ -14,10 +14,13 @@
   <h1>My Projects</h1>
     {% for project in projects %}
     <div class="container p-2 my-4 ml-2 border">
-	    <a class="proj font-weight-bold" href="/projects/{{ project[0] }}">{{ project[1] }}</a>
-      <p class="mx-3">{{ project[5] }}</p>
+	    <a class="proj font-weight-bold" href="/projects/{{ project.id }}">{{ project.name }}</a>
+      <p class="mx-3">{{ project.blurb }}</p>
     </div>
     {% endfor %}
+    <div id="form">
+    </div>
+    <button id="create" class="btn btn-secondary">Create a Project</button>
     <!--
     <div class="container p-2 my-4 ml-2 border">
       <a class="proj font-weight-bold" href="#!!!!!!!">Project EXAMPLE - Delete Later</a>
@@ -25,4 +28,5 @@
     </div>
     -->
 </div>
+<script src="/static/scripts/projects.js"></script>
 {% endblock %}

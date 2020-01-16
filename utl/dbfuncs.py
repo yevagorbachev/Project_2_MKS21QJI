@@ -79,9 +79,9 @@ def join_project(**kwargs):
     return
 
 def add_project(**kwargs):
-    check_pname = Project.query.filter_by(name=pname).first()
-    if(check_pname != None):
-        new_project = Project(kwargs['pname'], 0, kwargs['manager'].id, kwargs['teams'], kwargs['blurb'], kwargs['description'], kwargs['log'])
+    check_pname = Project.query.filter_by(name=kwargs['pname']).first()
+    if(check_pname == None):
+        new_project = Project(kwargs['pname'], 0, kwargs['manager'], kwargs['teams'], kwargs['blurb'], kwargs['description'], kwargs['log'])
         db.session.add(new_project)
         db.session.commit(project=new_project.id,user=kwargs['manager'])
         # join_project()
