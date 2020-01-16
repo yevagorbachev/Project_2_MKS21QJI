@@ -32,40 +32,40 @@
     </style>
 
     <body>
-      <!-- Sidebar -->
-    <div id="sidebar-wrapper" *>
-        <ul class="sidebar-nav">
-            <li class="sidebar-brand"><a href="/home">Project Manager<sup>TM</sup></a>
-            </li>
-            <li><a href="/account">Account</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="/projects" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      Projects
-              </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  {% for name in projects %}
-		  <a class="dropdown-item" href="/project/{{ name }}">{{ name }}}</a>
-                  {% endfor %}
-                </div>
-            </li>
-            <li><a href="/invites">Invites</a>
-            </li>
-            <li><a href="/logout">Logout</a>
-            </li>
-        </ul>
-    </div>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}" role="alert">
-                    {{ message }}
-                </div>
-                <br>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    {% block content %}
-    {% endblock %}
+          <!-- Sidebar -->
+        <div id="sidebar-wrapper" *>
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"><a href="/home">Project Manager<sup>TM</sup></a>
+                </li>
+                <li><a href="/account">Account</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="/projects" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          Projects
+                  </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      {% for name in projects %}
+    		  <a class="dropdown-item" href="/project/{{ name }}">{{ name }}}</a>
+                      {% endfor %}
+                    </div>
+                </li>
+                <li><a href="/invites">Invites</a>
+                </li>
+                <li><a href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                    </div>
+                    <br>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}
+        {% endblock %}
     </body>
 </html>
