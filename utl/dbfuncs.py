@@ -83,7 +83,7 @@ def add_project(**kwargs):
     if(check_pname == None):
         new_project = Project(kwargs['pname'], 0, kwargs['manager'], kwargs['teams'], kwargs['blurb'], kwargs['description'], kwargs['log'])
         db.session.add(new_project)
-        db.session.commit(project=new_project.id,user=kwargs['manager'])
+        db.session.commit()
         # join_project()
         return 1
     return 0
