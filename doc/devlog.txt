@@ -17,6 +17,9 @@ DEVLOG UPDATES: [
 amandaC -- 2019-01-07 22:19
 Added some database helper functions
 
+amandaC -- 2019-01-08 22:19
+Fixed database helper function headers and added new ones; renamed templates in flask app
+
 yevgeniyG -- 2019-01-10 08:00
 Updated README.md to follow specification
 
@@ -26,6 +29,15 @@ Added progress on sidebar and base templates
 junheeL -- 2020-01-13 08:30
 created working javascript for asynchronous update of a list of tasks
 
+amandaC -- 2020-01-13 21:30
+Finished writing most of Flask app
+
+amandaC -- 2020-01-14 20:33
+Changed database helper functions to use kwargs and updated models
+
+amandaC -- 2020-01-15 01:29
+Finished all backend functions
+
 elizabethD -- 2020-01-15 02:15
 Pushed all html pages without js
 
@@ -33,3 +45,10 @@ yevgeniyG -- 2020-01-15 05:54
 DEVLOG UPDATES: [
   - Added requisite information for Google Calendar integration
 ]
+
+amandaC -- 2020-01-15 20:39
+Tested login and fixed bugs
+Fixed footer to match rest of website
+
+amandaC -- 2020-01-16 02:19
+Implemented projects page and invite system
