@@ -279,12 +279,12 @@ def edittask():
         return redirect(url_for('projects'))
     task = get_task(taskid=request.args['id'])
     return render_template('edittask.html',
-            taskid=task.id
+            taskid=task.id,
             content=task.content,
             deadline=task.deadline)
 
 @app.route('/edittask', methods=['POST'])
-def pushedits
+def pushedits():
         t = request.form["id"]
         c = request.form["content"]
         d = request.form["deadline"]

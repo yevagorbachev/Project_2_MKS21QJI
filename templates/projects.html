@@ -6,26 +6,19 @@
   #profile {padding-left: 270px;}
   h1 {padding-top: 50px;}
   .proj {color: black; font-size: 17px;}
+  #create {background-color: #989898; border-color: #989898; padding: 25px;}
+  .btn-primary {margin-bottom: 20px; padding: 10px; background-color: green; border-color: green;}
+  #form {float: left; margin-left: 5px;}
 {% endblock %}
 
 {% block content %}
-
 <div class="container" id="profile">
-  {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-          {% for category, message in messages %}
-              <div class="alert alert-{{ category }}" role="alert">
-                  {{ message }}
-              </div>
-              <br>
-          {% endfor %}
-      {% endif %}
-  {% endwith %}
   <h1>My Projects</h1>
-  <div id="form" style="float:right;">
-  </div>
+  <br>
   <button id="create" class="btn btn-secondary">Create a Project</button>
-  <hr>
+  <br><br>
+  <div class="container font-weight-bold" id="form">
+  </div>
     <h3>Managed Projects</h3>
     {% for project in managedprojects %}
     <div class="container p-2 my-4 ml-2 border">
