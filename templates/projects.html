@@ -1,9 +1,42 @@
 {% extends "base_prof.html" %}
+{% block title %}My Projects{% endblock %}
+
+<!-- Extra CSS -->
+{% block style %}
+  #profile {padding-left: 270px;}
+  h1 {padding-top: 50px;}
+  .proj {color: black; font-size: 17px;}
+{% endblock %}
 
 {% block content %}
-  <h1>Login Page</h1>
-  <div style="color:red">
-    <p class="text-right">Right aligned text on all viewport sizes.</p>
-    Hi there
+
+<div class="container" id="profile">
+  <h1>My Projects</h1>
+  <div id="form" style="float:right;">
   </div>
+  <button id="create" class="btn btn-secondary">Create a Project</button>
+  <hr>
+    <h3>Managed Projects</h3>
+    {% for project in managedprojects %}
+    <div class="container p-2 my-4 ml-2 border">
+	    <a class="proj font-weight-bold" href="/projects/{{ project.id }}">{{ project.name }}</a>
+      <p class="mx-3">{{ project.blurb }}</p>
+    </div>
+    {% endfor %}
+<hr>
+  <h3>Joined Projects</h3>
+  {% for project in myprojects %}
+  <div class="container p-2 my-4 ml-2 border">
+	    <a class="proj font-weight-bold" href="/projects/{{ project.id }}">{{ project.name }}</a>
+    <p class="mx-3">{{ project.blurb }}</p>
+  </div>
+  {% endfor %}
+    <!--
+    <div class="container p-2 my-4 ml-2 border">
+      <a class="proj font-weight-bold" href="#!!!!!!!">Project EXAMPLE - Delete Later</a>
+      <p class="mx-3">This is the description.</p>
+    </div>
+    -->
+</div>
+<script src="/static/scripts/projects.js"></script>
 {% endblock %}

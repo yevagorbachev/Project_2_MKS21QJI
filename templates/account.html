@@ -1,0 +1,22 @@
+{% extends "base_prof.html" %}
+{% block title %}My Projects{% endblock %}
+
+<!-- Extra CSS -->
+{% block style %}
+  #profile {padding-left: 270px;}
+  h1 {padding-top: 50px;}
+  .proj {color: black; font-size: 17px;}
+{% endblock %}
+
+{% block content %}
+
+<div class="container" id="profile">
+
+  <h1>Account</h1>
+    <form method="post" action={{ url_for('account') }}>
+        Old Password: <input type="text" name="old_password"/><br/><br/>
+        New Password: <input type="text" name="new_password"/><br/>
+        <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+</div>
+{% endblock %}

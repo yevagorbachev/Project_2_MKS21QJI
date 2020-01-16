@@ -1,9 +1,10 @@
 {% extends "base_sign.html" %}
 
 {% block content %}
-  <p></p>
+
+<div class="container">
   <h1>Sign up: </h1>
-  <form action='#!!!!!!!!!!!!!' method="POST">
+  <form action='/register' method="POST">
       Username:<br>
       <input type="text" name="username"><br>
       Password:<br>
@@ -11,7 +12,8 @@
       Confirm Password:<br>
       <input type="password" name="confirm">
       <br>
-      <input type="submit" value="Submit">
+      <input class="sub" type="submit" value="Submit">
   </form><br>
-  <a href="#!!!!!!!!!!!!!">Already have an account?</a>
+  <a href="/login">Already have an account?</a>
+</div>
 {% endblock %}

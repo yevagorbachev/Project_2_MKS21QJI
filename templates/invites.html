@@ -1,0 +1,40 @@
+{% extends "base_prof.html" %}
+{% block title %}Invites{% endblock %}
+
+<!-- Extra CSS -->
+{% block style %}
+  #invite {padding-left: 270px;}
+  h1 {padding-top: 50px;}
+  .proj {color: black; font-size: 17px;}
+  .choose {padding: 0px;}
+{% endblock %}
+
+{% block content %}
+
+<div class="container" id="invite">
+  <h1>Invites</h1>
+    {% for name in invites %}
+    <div class="container p-5 my-4 ml-2 border">
+      <p class="proj font-weight-bold">{{name}}</p>
+      <form method="post" action={{ url_for('invites') }}>
+          <input type="hidden" name="project" value="{{name}}"/>
+          <button type="submit" name="response" value="y" class="btn btn-outline-secondary btn-sm">Accept</button>
+          <button type="submit" name="response" value="n" class="btn btn-outline-secondary btn-sm">Decline</button>
+      </form>
+      <!--
+      <a class="choose font-weight-bolder" method="POST" name="response" href='/invites' value="y">Accept</a>
+      <a class="choose font-weight-bolder" method="POST" name="response" href='/invites' value="n">Decline</a>
+      -->
+    </div>
+    <br>
+    {% endfor %}
+    <!--
+    <div class="container p-5 my-4 ml-2 border">
+      <p class="proj font-weight-bold">Project EXAMPLE</p>
+      <a class="choose font-weight-bolder" href=''>Accept</a>
+      <a class="choose font-weight-bolder" href=''>Decline</a>
+    </div>
+    <br>
+    -->
+</div>
+{% endblock %}

@@ -6,159 +6,69 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+      <!-- jQuery -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
       {% block head %}
-          <title>{{Title}}</title>
+          <title>{% block title %}{% endblock %}</title>
       {% endblock %}
     </head>
     <style>
+        body {background-color: #efeeee;}
+        {% block style %}{% endblock %}
     /* https://stackoverflow.com/questions/23669330/bootstrap-sidebar-menu-and-sidebar-navigation */
-        #wrapper {
-          padding-left: 250px;
-          transition: all 0.4s ease 0s;
-        }
-
-        #sidebar-wrapper {
-          margin-left: -250px;
-          left: 250px;
-          width: 250px;
-          background: #000;
-          position: fixed;
-          height: 100%;
-          overflow-y: auto;
-          z-index: 1000;
-          transition: all 0.4s ease 0s;
-        }
-
-        #page-content-wrapper {
-          width: 100%;
-        }
-
-        .sidebar-nav {
-          position: absolute;
-          top: 0;
-          width: 250px;
-          list-style: none;
-          margin: 0;
-          padding: 0;
-        }
-
-        .sidebar-nav li {
-          line-height: 40px;
-          text-indent: 20px;
-        }
-
-        .sidebar-nav li a {
-          color: #999999;
-          display: block;
-          text-decoration: none;
-        }
-
-        .sidebar-nav li a:hover {
-          color: #fff;
-          background: rgba(255,255,255,0.2);
-          text-decoration: none;
-        }
-
-        .sidebar-nav li a:active,
-        .sidebar-nav li a:focus {
-          text-decoration: none;
-        }
-
-        .sidebar-nav > .sidebar-brand {
-          height: 65px;
-          line-height: 60px;
-          font-size: 18px;
-        }
-
-        .sidebar-nav > .sidebar-brand a {
-          color: #999999;
-        }
-
-        .sidebar-nav > .sidebar-brand a:hover {
-          color: #fff;
-          background: none;
-        }
-
-        .content-header {
-          height: 65px;
-          line-height: 65px;
-        }
-
-        .content-header h1 {
-          margin: 0;
-          margin-left: 20px;
-          line-height: 65px;
-          display: inline-block;
-        }
-
-        #menu-toggle {
-          display: none;
-        }
-
-        .inset {
-          padding: 20px;
-        }
-
-        @media (max-width:767px) {
-
-          #wrapper {
-            padding-left: 0;
-          }
-
-          #sidebar-wrapper {
-            left: 0;
-          }
-
-          #wrapper.active {
-            position: relative;
-            left: 250px;
-          }
-
-          #wrapper.active #sidebar-wrapper {
-            left: 250px;
-            width: 250px;
-            transition: all 0.4s ease 0s;
-          }
-
-          #menu-toggle {
-            display: inline-block;
-          }
-
-          .inset {
-            padding: 15px;
-          }
-        }
+        #sidebar-wrapper {margin-left: -250px; left: 250px; width: 250px; background: #000;
+                          position: fixed; height: 100%; }
+        .sidebar-nav {position: absolute; top: 0; width: 250px; list-style: none; padding: 0;}
+        .sidebar-nav li {line-height: 40px; text-indent: 20px;}
+        .sidebar-nav li a {color: #999999; display: block; text-decoration: none;}
+        .sidebar-nav li a:hover {color: #fff; background: rgba(255,255,255,0.2); text-decoration: none;}
+	* {border-radius:0 !important;}
+        .sidebar-nav > .sidebar-brand {height: 60px; line-height: 65px; font-size: 20px;}
+        .sidebar-nav > .sidebar-brand a {color: #999999;}
+        .sidebar-nav > .sidebar-brand a:hover {color: #fff; background: none;}
+        #navbarDropdown {line-height: 40px; text-indent: 20px; padding: 0;}
     </style>
+
     <body>
-      <!-- Sidebar -->
-    <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <li class="sidebar-brand"><a href="#!!!!!!!!!!!!!">Project Manager</a>
-            </li>
-            <li><a href="#!!!!!!!!!!!!!">Home</a>
-            </li>
-            <li><a href="#!!!!!!!!!!!!!">Account</a>
-            </li>
-            <li><a href="#!!!!!!!!!!!!!">Projects Change to Dropdown</a>
-            </li>
-            <li><a href="#!!!!!!!!!!!!!">Invites</a>
-            </li>
-            <!-- <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Project Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#!!!!!!!!!!!!!">Action</a>
-          <a class="dropdown-item" href="#!!!!!!!!!!!!!">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#!!!!!!!!!!!!!">Something else here</a>
+          <!-- Sidebar -->
+        <div id="sidebar-wrapper"*>
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"><a href="/home">Project Manager<sup>TM</sup></a>
+                </li>
+                <li><a href="/account">Account</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="/projects" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          Projects
+                  </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      {% for name in projects %}
+    		  <a class="dropdown-item" href="/project/{{ name }}">{{ name }}}</a>
+                      {% endfor %}
+                    </div>
+                </li>
+                <li><a href="/invites">Invites</a>
+                </li>
+                <li><a href="/logout">Logout</a>
+                </li>
+            </ul>
         </div>
-      </li> -->
-        </ul>
-    </div>
-    {% block content %}
-    {% endblock %}
+        <div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                    </div>
+                    <br>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        </div>
+        {% block content %}
+        {% endblock %}
     </body>
 </html>
