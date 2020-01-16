@@ -12,6 +12,9 @@
 
 <div class="container" id="profile">
   <h1>My Projects</h1>
+    <form method="post" action={{ url_for('account') }}>
+      <div><a class="btn btn-outline-dark" href={{ url_for('create') }} role="button">Create a Project</a></div>
+     </form>
     {% for project in projects %}
     <div class="container p-2 my-4 ml-2 border">
 	    <a class="proj font-weight-bold" href="/projects/{{ project[0] }}">{{ project[1] }}</a>

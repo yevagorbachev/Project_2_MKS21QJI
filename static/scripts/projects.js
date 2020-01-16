@@ -14,14 +14,14 @@ const add = function(e) {
 	let project = e.target.parentElement;
 	let user = document.getElementById('user');
 	$.ajax({
-			
+
 	});
 }
 
 const createproj = function(e) {
 	$.ajax({
 		method: 'GET',
-		url: '/createproj',
+		url: '/create',
 		success: function(data) {
 			let project = document.createElement('div')
 			project.innerHTML = ''
@@ -37,7 +37,7 @@ const createproj = function(e) {
 const create = function(e) {
 	$.ajax({
 		method: 'POST',
-		url: '/createproj',
-		success: 
+		url: '/create',
+		success:
 	});
 }
