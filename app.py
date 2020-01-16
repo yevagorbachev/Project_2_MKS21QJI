@@ -6,7 +6,7 @@
 from flask import *
 from flask_login import LoginManager, login_required, login_user, logout_user
 from os import urandom
-from models import db, User, Invites, Project, Task, Assignment, Employment
+from utl.models import db, User, Invites, Project, Task, Assignment, Employment
 from utl.dbfuncs import *
 from utl.errors import NoPerms
 import json
@@ -27,7 +27,7 @@ def load_user(user_id):
 # app configurations
 app.config['SECRET_KEY'] = (urandom(64))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/sitedata.db'
 app.config['USE_SESSION_FOR_NEXT'] = True
 
 # start database
