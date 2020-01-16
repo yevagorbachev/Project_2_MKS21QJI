@@ -9,6 +9,7 @@ from os import urandom
 from models import db, User, Invites, Project, Task, Assignment, Employment
 from utl.dbfuncs import *
 from utl.errors import NoPerms
+import json
 
 app = Flask(__name__)
 
@@ -185,6 +186,7 @@ def project(pid):
     project = Project.query.filter_by(id=pid).first()
     print(project)
     return render_template('proj_info.html',
+                            pid=pid,
                             name=project.name,
                             description=project.description,
                             tasks=get_tasks(projid=pid))
@@ -231,15 +233,15 @@ def addtask():
         return redirect(url_for("login"))
 
     p = int(request.form["projid"])
-    check_manager = get_project(project)
+    check_manager = get_project(pid=p)
     if (check_manager.manager != get_user(uname=session['username']).id):
         raise NoPerms('You are not the manager of this project')
-    u = request.form["user"]
-    s = request.form["status"]
-    c = request.form["content"]
-    d = request.form["deadline"]
+    u = request.form['user']
+    s = 'incomplete'
+    c = ''
+    d = ''
     taskid = add_task(pname=p,uname=u,status=s,content=c,deadline=d)
-    return taskid;
+    return json.dumps({'id' : taskid})
 
 @app.route('/edittask', methods=['GET', 'POST'])
 def edittask():
@@ -247,12 +249,12 @@ def edittask():
         return redirect(url_for("login"))
 
     if request.method == 'GET':
-        p = request.form["project"]
-        check_manager = get_project(project)
+        p = request.args["projid"]
+        check_manager = get_project(pid=p)
         if (check_manager.manager != get_user(uname=session['username']).id):
             raise NoPerms('You are not the manager of this project')
-        task = get_task(int(request.args['id']))
-        return '<input type="hidden" id="id" value="{}">User:<input type="text" id="user"><br><textarea id="content">{}</textarea><br><input type="date" id="deadline" value="{}"><br><button class="btn btn-primary" id="push">Push Edits</button>'.format(task.id, task.content, task.deadline)
+        task = get_task(taskid=request.args['id'])
+        return '<input type="hidden" id="id" value="{}"><textarea id="content">{}</textarea><br><input type="date" id="deadline" value="{}"><br><button class="btn btn-primary" id="push">Push Edits</button>'.format(task.id, task.content, task.deadline)
     else:
         t = int(request.form["id"])
         c = request.form["content"]

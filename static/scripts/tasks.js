@@ -1,9 +1,10 @@
 //relies on jQuery being implemented on the html page
 const edit = function(e) {
 	console.log(e);
+	let projid = document.getElementById('projid').value;
 	let task = e;
 	let id = e.id;
-	let dataString = `id=${id}`;
+	let dataString = `id=${id}&projid=${projid}`;
 	console.log(dataString);
 	$.ajax({
 		type: 'GET',
@@ -34,7 +35,6 @@ const pushedits = function(e) {
 	let stat = document.getElementById("status").value;
 	let content = document.getElementById("content").value;
 	let deadline = document.getElementById("deadline").value;
-	let user = document.getElementById("user").value;
 	$.ajax({
 		type: 'POST',
 		url: '/edittask',
@@ -52,7 +52,10 @@ const pushedits = function(e) {
 
 const newtask = function(e) {
 	let projid = document.getElementById("projid").value;
-	let dataString = `projid=${projid}`;
+	let user = document.getElementById("username").value;
+	let deleted = document.getElementById('temp');
+	deleted.parentNode.removeChild(deleted);
+	let dataString = `projid=${projid}&user=${user}`;
 	console.log(dataString)
 	$.ajax({
 		type: 'POST',
@@ -76,8 +79,17 @@ const newtask = function(e) {
 	});
 };
 
+const create = function() {
+	let assignment = document.createElement("div");
+	assignment.id = 'temp';
+	assignment.innerHTML = 'Assignee: <input type="text" id="username"><button class="btn btn-primary" id="add">Assign</button>';
+	document.getElementById("tasks").appendChild(assignment);
+	let submit = document.getElementById('add');
+	submit.addEventListener('click', newtask);
+};
+
 var tasks = document.getElementsByClassName("task");
 for(var i = 0; i < tasks.length; i++) {
 	tasks[i].addEventListener("click", edittask);
 }
-document.getElementById("create").addEventListener("click", newtask);
+document.getElementById("create").addEventListener("click", create);

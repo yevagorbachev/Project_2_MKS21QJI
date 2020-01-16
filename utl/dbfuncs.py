@@ -5,7 +5,7 @@ def get_user(**kwargs):
     return User.query.filter_by(username=kwargs['uname']).first()
 
 def get_project(**kwargs):
-    return Project.query.filter_by(name=kwargs['uname']).first()
+    return Project.query.filter_by(id=kwargs['pid']).first()
 
 def get_user_project(**kwargs):
     return Employment.query.filter_by(userid=kwargs['uid']).all()
@@ -110,12 +110,15 @@ def abandon_project(**kwargs):
 def get_tasks(**kwargs):
     return Assignment.query.filter_by(projid=kwargs['projid']).all()
 
+def get_task(**kwargs):
+    return Task.query.filter_by(id=kwargs['taskid']).first()
+
 def add_task(**kwargs):
-    proj = Project.query.filter_by(name=kwargs['pname']).first()
+    proj = Project.query.filter_by(id=kwargs['pname']).first()
     new_task = Task(proj.id, kwargs['status'], kwargs['content'], kwargs['deadline'])
     db.session.add(new_task)
 
-    user = User.query.filter_by(name=kwargs['uname']).first()
+    user = User.query.filter_by(username=kwargs['uname']).first()
     new_assignment = Assignment(user.id, proj.id, new_task.id)
     db.session.add(new_assignment)
 
