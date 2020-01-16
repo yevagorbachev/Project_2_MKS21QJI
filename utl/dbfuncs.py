@@ -1,5 +1,5 @@
 from flask import *
-from models import db, User, Invites, Project, Task, Assignment, Employment
+from utl.models import db, User, Invites, Project, Task, Assignment, Employment
 
 def get_user(**kwargs):
     return User.query.filter_by(username=kwargs['uname']).first()
