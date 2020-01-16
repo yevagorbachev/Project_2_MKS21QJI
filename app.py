@@ -246,7 +246,7 @@ def edittask():
         if (check_manager.manager != get_user(uname=session['username']).id):
             raise NoPerms('You are not the manager of this project')
         task = get_task(int(request.args['id']))
-        return '<input type="hidden" id="id" value="{}"><textarea id="content">{}</textarea><br><input type="date" id="deadline" value="{}"><br><button class="btn btn-primary" id="push">Push Edits</button>'.format(task.id, task.content, task.deadline)
+        return '<input type="hidden" id="id" value="{}">User:<input type="text" id="user"><br><textarea id="content">{}</textarea><br><input type="date" id="deadline" value="{}"><br><button class="btn btn-primary" id="push">Push Edits</button>'.format(task.id, task.content, task.deadline)
     else:
         t = int(request.form["id"])
         c = request.form["content"]
