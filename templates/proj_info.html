@@ -1,0 +1,36 @@
+{% extends "base_prof.html" %}
+{% block title %}Info{% endblock %}
+
+<!-- Extra CSS -->
+{% block style %}
+  #proj {padding-left: 270px;}
+  h1 {padding-top: 50px;}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container" id="proj">
+  <h1>{{name}}</h1>
+  <input type="hidden" id="projid" value="{{ pid }}">
+  <hr>
+    <form method="post" action={{ url_for('invite') }}>
+        <input type="text" name="uname"/>
+        <input type="hidden" name="project" value="{{name}}"/>
+        <button type="submit" class="btn btn-outline-secondary btn-sm">Invite</button>
+    </form>
+    <div class="container p-2 my-4 ml-2">
+      <p class="mx-3">{{description}}</p>
+    </div>
+    <br>
+    <div id="tasks" class="mx-3">
+	    {% for task in tasks %}
+	    <div class="task container p-2 my-4 ml-2 border" id="{{ task.id }}">
+		    <p>{{ task.deadline }} - <i>{{ task.status }}</i>: {{ task.name }}</p>
+	    </div>
+	    {% endfor %}
+    </div>
+    <button id="create" class="btn btn-secondary">Create a New Task</button>
+</div>
+<script src="/static/scripts/tasks.js"></script>
+{% endblock %}
