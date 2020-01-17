@@ -41,14 +41,18 @@
                 <li><a href="/account">Account</a>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="/projects" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <a href="#" class="dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                           Projects
                   </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      {% for name in projects %}
-    		            <a class="dropdown-item" href="/project/{{ name }}">{{ name }}}</a>
-                      {% endfor %}
-                    </div>
+                  <a class="dropdown-item" href="/managedprojects">
+                          Managed Projects
+                  </a>
+                  <a class="dropdown-item" href="/joinedprojects">
+                          Joined Projects
+                  </a>
+                  <!-- {% for name in projects %}
+		            <a class="dropdown-item" href="/project/{{ name }}">{{ name }}}</a>
+                  {% endfor %} -->
                 </li>
                 <li><a href="/invites">Invites</a>
                 </li>
@@ -70,7 +74,7 @@
                 {% endif %}
             {% endwith %} -->
         {% block content %}
-            
+
         {% endblock %}
     </body>
 </html>

@@ -55,7 +55,7 @@ def loginform():
     if (verify_user(uname=user, password=password)):
         session['username'] = user
         flash('Logged in successfully!', 'success')
-        return redirect(url_for("projects"))
+        return redirect(url_for("managedprojects"))
     else:
         return redirect(url_for("login"))
 
@@ -73,13 +73,17 @@ def register():
 def registerform():
     user = request.form["username"]
     password = request.form["password"]
+    confirm = request.form["confirm"]
 
     check_user = User.query.filter_by(username=user).first()
 
     if (check_user != None):
-        flash("Username is taken. Please try again.")
+        flash("Username is taken. Please try again.", 'danger')
         return redirect(url_for("register"))
     else:
+        if(password != confirm):
+            flash("Passwords do not match. Please try again.", 'danger')
+            return redirect(url_for("register"))
         add_user(uname=user, password=password)
         return redirect(url_for("login"))
 
@@ -150,8 +154,19 @@ def invitesform():
 
     return redirect(url_for("invites"))
 
-@app.route('/projects', methods=['GET'])
-def projects():
+@app.route('/managedprojects', methods=['GET'])
+def managedprojects():
+    if('username' not in session):
+        return redirect(url_for("login"))
+
+    m = Project.query.filter_by(manager=get_user(uname=session['username']).id).all()
+
+    # print(m)
+    return render_template('managedprojects.html',
+                            managedprojects = m)
+
+@app.route('/joinedprojects', methods=['GET'])
+def joinedprojects():
     if('username' not in session):
         return redirect(url_for("login"))
 
@@ -161,12 +176,9 @@ def projects():
     for employed in e:
         current.append(employed.project)
 
-    m = Project.query.filter_by(manager=get_user(uname=session['username']).id).all()
-
     # print(m)
-    return render_template('projects.html',
-                            myprojects = current,
-                            managedprojects = m)
+    return render_template('joinedprojects.html',
+                            myprojects = current)
 
 @app.route('/create', methods=['POST'])
 def create():
@@ -186,7 +198,7 @@ def create():
         flash("Created project: "+ name, 'primary')
     else:
         flash("Project name not unique: "+ name, 'danger')
-    return redirect(url_for("projects"))
+    return redirect(url_for("managedprojects"))
 
 @app.route('/projects/<pid>', methods=['GET'])
 def project(pid):
@@ -216,7 +228,7 @@ def task_status():
     if (status == "-1"):
         delete_task(task)
         flash("Abandoned task: "+ task, 'dark')
-    return redirect(url_for("projects"))
+    return redirect(url_for("joinedprojects"))
 
 @app.route('/edit', methods=['POST'])
 def edit():
@@ -229,7 +241,7 @@ def edit():
     check_manager = get_project_by_name(pname=project)
     if (check_manager.manager != get_user(uname=session['username']).id):
         flash("You are not the manager of this project",'danger')
-        return redirect(url_for("projects"))
+        return redirect(url_for("joinedprojects"))
 
     if (status == "1"):
         complete_project(project)
@@ -237,7 +249,7 @@ def edit():
     if (status == "-1"):
         abandon_project(project)
         flash("Abandoned project: "+ project,'dark')
-    return redirect(url_for("projects"))
+    return redirect(url_for("managedprojects"))
 
 @app.route('/newtask', methods=['GET'])
 def newtask():
@@ -276,7 +288,7 @@ def edittask():
     check_manager = get_project_by_id(pid=p)
     if (check_manager.manager != get_user(uname=session['username']).id):
         flash('You are not the manager of this project', 'danger')
-        return redirect(url_for('projects'))
+        return redirect(url_for('joinedprojects'))
     task = get_task(taskid=request.args['id'])
     return render_template('edittask.html',
             taskid=task.id,
@@ -302,16 +314,16 @@ def invite():
     check_manager = get_project_by_name(pname=p)
     if (check_manager.manager != get_user(uname=session['username']).id):
         flash("You are not the manager of this project",'danger')
-        return redirect(url_for("projects"))
+        return redirect(url_for("joinedprojects"))
 
     u = request.form["uname"]
 
     if(get_user(uname=u) == None):
         flash("There is no user with that name",'danger')
-        return redirect(url_for("projects"))
+        return redirect(url_for("managedprojects"))
 
     add_invite(project=get_project_by_name(pname=p),user=get_user(uname=u))
     flash("Invite sent",'success')
-    return redirect(url_for("projects"))
+    return redirect(url_for("managedprojects"))
 
 app.run(debug=True)
