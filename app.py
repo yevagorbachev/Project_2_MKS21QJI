@@ -55,7 +55,7 @@ def loginform():
     if (verify_user(uname=user, password=password)):
         session['username'] = user
         flash('Logged in successfully!', 'success')
-        return redirect(url_for("managedprojects"))
+        return redirect(url_for("home"))
     else:
         return redirect(url_for("login"))
 
@@ -208,12 +208,14 @@ def project(pid):
 
     project = Project.query.filter_by(id=pid).first()
     t = get_tasks(projid=pid)
-    print(t)
+    u = []
+    for task in t:
+        u.append([task,get_user_by_id(uid=Assignment.query.filter_by(taskid=task.id).first().userid).username])
     return render_template('proj_info.html',
                             pid=pid,
                             name=project.name,
                             description=project.description,
-                            tasks=t)
+                            tasks=u)
 
 @app.route('/task_status', methods=['POST'])
 def task_status():

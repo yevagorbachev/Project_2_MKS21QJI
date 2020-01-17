@@ -4,6 +4,9 @@ from utl.models import db, User, Invites, Project, Task, Assignment, Employment
 def get_user(**kwargs):
     return User.query.filter_by(username=kwargs['uname']).first()
 
+def get_user_by_id(**kwargs):
+    return User.query.filter_by(id=kwargs['uid']).first()
+
 def get_project_by_id(**kwargs):
     return Project.query.filter_by(id=kwargs['pid']).first()
 

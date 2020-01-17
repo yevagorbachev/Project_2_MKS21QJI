@@ -26,7 +26,8 @@
     <div id="tasks" class="mx-3">
 	    {% for task in tasks %}
 	    <div class="task container p-2 my-4 ml-2 border" id="{{ task.id }}">
-		    <p>{{ task.deadline }} - <i>{{ task.status }}</i>: {{ task.name }}</p>
+		    <p>{{ task[0].deadline }} - <i>{{ task[0].status }}</i>: {{ task[1] }}</p>
+        <p>{{ task[0].content }}</p>
 	    </div>
 	    {% endfor %}
 	<script>
