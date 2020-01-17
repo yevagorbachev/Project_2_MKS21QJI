@@ -73,13 +73,17 @@ def register():
 def registerform():
     user = request.form["username"]
     password = request.form["password"]
+    confirm = request.form["confirm"]
 
     check_user = User.query.filter_by(username=user).first()
 
     if (check_user != None):
-        flash("Username is taken. Please try again.")
+        flash("Username is taken. Please try again.", 'danger')
         return redirect(url_for("register"))
     else:
+        if(password != confirm):
+            flash("Passwords do not match. Please try again.", 'danger')
+            return redirect(url_for("register"))
         add_user(uname=user, password=password)
         return redirect(url_for("login"))
 
