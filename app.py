@@ -148,9 +148,11 @@ def invitesform():
     if (response == "y"):
         accept_invite(user=get_user(uname=session['username']), project=get_project_by_name(pname=p))
         flash("Successfully joined project: "+ p, 'success')
+        return redirect(url_for("invites"))
     else:
         decline_invite(user=get_user(uname=session['username']), project=get_project_by_name(pname=p))
         flash("Rejected invite to project: "+ p, 'primary')
+        return redirect(url_for("invites"))
 
     return redirect(url_for("invites"))
 
@@ -196,8 +198,11 @@ def create():
     log = '';
     if (add_project(pname=name, manager=manager, teams=teams, blurb=blurb, description=description, log=log)):
         flash("Created project: "+ name, 'primary')
+        return redirect(url_for("managedprojects"))
     else:
         flash("Project name not unique: "+ name, 'danger')
+        return redirect(url_for("managedprojects"))
+
     return redirect(url_for("managedprojects"))
 
 @app.route('/projects/<pid>', methods=['GET'])
@@ -222,14 +227,24 @@ def task_status():
     if('username' not in session):
         return redirect(url_for("login"))
 
-    task = request.form["task"]
-    status = request.form["status"]
-    if (status == "1"):
-        complete_task(task)
-        flash("Completed task: "+ task, 'success')
-    if (status == "-1"):
-        delete_task(task)
-        flash("Abandoned task: "+ task, 'dark')
+    t = Task.query.filter_by(id=request.form["task"]).first()
+    status = request.form["response"]
+    a = Assignment.query.filter_by(taskid=t.id).first()
+    u = get_user(uname=session['username'])
+
+    if (a.userid != u.id):
+        flash("You were not assigned this task", 'danger')
+        return redirect('/projects/{}'.format(a.projid))
+
+    if (status == "c"):
+        complete_task(task=t)
+        flash("Completed a task", 'success')
+        return redirect('/projects/{}'.format(a.projid))
+    if (status == "a"):
+        delete_task(task=t)
+        flash("Abandoned a task", 'dark')
+        return redirect('/projects/{}'.format(a.projid))
+
     return redirect(url_for("joinedprojects"))
 
 @app.route('/edit', methods=['POST'])
@@ -243,14 +258,17 @@ def edit():
     check_manager = get_project_by_name(pname=project)
     if (check_manager.manager != get_user(uname=session['username']).id):
         flash("You are not the manager of this project",'danger')
-        return redirect(url_for("joinedprojects"))
+        return redirect('/projects/{}'.format(""+check_manager.id))
 
     if (status == "1"):
         complete_project(project)
         flash("Completed project: "+ project,'success')
+        return redirect(url_for("managedprojects"))
     if (status == "-1"):
         abandon_project(project)
         flash("Abandoned project: "+ project,'dark')
+        return redirect(url_for("managedprojects"))
+
     return redirect(url_for("managedprojects"))
 
 @app.route('/newtask', methods=['GET'])

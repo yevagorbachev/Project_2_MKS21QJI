@@ -11,6 +11,16 @@
 {% block content %}
 
 <div class="container" id="proj">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+          {% for category, message in messages %}
+              <div class="alert alert-{{ category }}" role="alert">
+                  {{ message }}
+              </div>
+              <br>
+          {% endfor %}
+      {% endif %}
+  {% endwith %}
   <h1>{{name}}</h1>
   <input type="hidden" id="projid" value="{{ pid }}">
   <hr>
@@ -28,6 +38,13 @@
 	    <div class="task container p-2 my-4 ml-2 border" id="{{ task.id }}">
 		    <p>{{ task[0].deadline }} - <i>{{ task[0].status }}</i>: {{ task[1] }}</p>
         <p>{{ task[0].content }}</p>
+        {% if task[0].status == 'incomplete' %}
+          <form method="post" action={{ url_for('task_status') }}>
+              <input type="hidden" name="task" value="{{ task[0].id }}"/>
+              <button type="submit" name="response" value="c" class="btn btn-outline-dark btn-sm">Complete</button>
+              <button type="submit" name="response" value="a" class="btn btn-outline-dark btn-sm">Abandon</button>
+          </form>
+        {% endif %}
 	    </div>
 	    {% endfor %}
 	<script>

@@ -11,6 +11,16 @@
 {% block content %}
 
 <div class="container" id="profile">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+          {% for category, message in messages %}
+              <div class="alert alert-{{ category }}" role="alert">
+                  {{ message }}
+              </div>
+              <br>
+          {% endfor %}
+      {% endif %}
+  {% endwith %}
   <h1>Home</h1>
     <!--
     <div class="container p-2 my-4 ml-2 border">

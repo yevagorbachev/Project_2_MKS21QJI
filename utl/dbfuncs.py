@@ -141,15 +141,11 @@ def edit_task(**kwargs):
     return
 
 def complete_task(**kwargs):
-    proj = Project.query.filter_by(name=kwargs['pname']).first()
-    task = Task.query.filter_by(projid=proj.id).first()
-    task.status = 1
+    kwargs['task'].status = "complete"
     db.session.commit()
     return
 
 def delete_task(**kwargs):
-    proj = Project.query.filter_by(name=kwargs['pname']).first()
-    task = Task.query.filter_by(projid=proj.id).first()
-    db.session.delete(task)
+    db.session.delete(kwargs['task'])
     db.session.commit()
     return
