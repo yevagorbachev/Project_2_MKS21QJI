@@ -279,7 +279,7 @@ def newtask():
     check_manager = get_project_by_id(pid=p)
     if (check_manager.manager != get_user(uname=session['username']).id):
         flash('You are not the manager of this project', 'danger')
-        return redirect(url_for('projects/{}'.format(p)))
+        return redirect('projects/{}'.format(p))
     return render_template('newtask.html',
             projid=p);
 
@@ -292,7 +292,7 @@ def addtask():
     p = request.form["projid"]
     check_manager = get_project_by_id(pid=p)
     if (check_manager.manager != get_user(uname=session['username']).id):
-        raise NoPerms('You are not the manager of this project')
+        flash('You are not the manager of this project')
     u = request.form['username']
     c = request.form['content']
     d = request.form['deadline']
