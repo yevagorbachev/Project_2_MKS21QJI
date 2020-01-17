@@ -9,14 +9,14 @@
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
       {% block head %}
-          <title>{{Title}}</title>
+          <title>{% block title %}{% endblock %}</title>
       {% endblock %}
     </head>
     <style>
         {% block style %}{% endblock %}
         body {background-color: #efeeee; text-align: center;}
         h1 {padding: 20px}
-        .sub {padding: 10px; border-radius: 4px; background-color: #989898;
+        .sub {padding: 10px; border-radius: 0px; background-color: #989898;
               border: none; color: white; text-align: center; display: inline-block;
               font-size: 16px; margin: 4px 2px; cursor: pointer;}
         .footer {position: fixed; left: 0; bottom: 0; width: 100%;}
@@ -36,7 +36,7 @@
       {% endblock %}
       <br>
       <br>
-      <footer style="background-color:black; color:rgb(153,153,153);" class="footer font-small p-2 text-left">
+      <footer style="background-color:black; color:rgb(153,153,153);" class="footer font-small pb-3 px-3 text-left">
         <br>
         <div class="row">
           <div class="col-sm-6">
