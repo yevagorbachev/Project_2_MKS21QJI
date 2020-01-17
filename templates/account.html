@@ -13,9 +13,9 @@
 <div class="container" id="profile">
 
   <h1>Account</h1>
-    <form method="post" action={{ url_for('account') }}>
-        Old Password: <input type="text" name="old_password"/><br/><br/>
-        New Password: <input type="text" name="new_password"/><br/>
+    <form class="font-weight-bold" method="post" action={{ url_for('account') }}>
+        Old Password: <input class="form-control" type="text" name="old_password"><br>
+        New Password: <input class="form-control" type="password" name="new_password"><br>
         <button type="submit" class="btn btn-dark">Submit</button>
     </form>
 </div>

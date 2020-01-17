@@ -6,18 +6,21 @@
   #profile {padding-left: 270px;}
   h1 {padding-top: 50px;}
   .proj {color: black; font-size: 17px;}
+  form {margin-top: 20px; display: inline-block;}
 {% endblock %}
 
 {% block content %}
 
 <div class="container" id="profile">
   <h1>Create a New Task</h1>
-  <form method="post" action={{ url_for('newtask') }}>
+  <form class="font-weight-bold" method="post" action={{ url_for('newtask') }}>
+    <div class="container">
 	  <input type="hidden" name="projid" value="{{projid}}">
-      Assign To: <input type="text" name="username"/><br/>
-      Content: <input type="text" name="content"/><br/>
-      Deadline: <input type="date" name="deadline"/><br/>
+      Assign To: <input class="form-control" type="text" name="username" size="60"><br>
+      Content: <input class="form-control" type="text" name="content" size="60"><br>
+      Deadline: <input class="form-control" type="date" name="deadline"><br>
       <button type="submit" class="btn btn-dark">Submit</button>
+      </div>
   </form>
 </div>
 <script src="/static/scripts/projects.js"></script>
