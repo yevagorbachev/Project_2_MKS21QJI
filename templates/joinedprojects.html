@@ -13,21 +13,8 @@
 
 {% block content %}
 <div class="container" id="profile">
-  <h1>My Projects</h1>
-  <br>
-  <button id="create" class="btn btn-secondary">Create a Project</button>
-  <br><br>
-  <div class="container font-weight-bold" id="form">
-  </div>
-    <h3>Managed Projects</h3>
-    {% for project in managedprojects %}
-    <div class="container p-2 my-4 ml-2 border">
-	    <a class="proj font-weight-bold" href="/projects/{{ project.id }}">{{ project.name }}</a>
-      <p class="mx-3">{{ project.blurb }}</p>
-    </div>
-    {% endfor %}
-<hr>
-  <h3>Joined Projects</h3>
+  <h1>Joined Projects</h1>
+  <hr>
   {% for project in myprojects %}
   <div class="container p-2 my-4 ml-2 border">
 	    <a class="proj font-weight-bold" href="/projects/{{ project.id }}">{{ project.name }}</a>
